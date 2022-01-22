@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rando4Stats", "Rando4Stats\Rando4Stats.csproj", "{20C65549-E96B-412F-9429-FD2BF40B8D3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20C65549-E96B-412F-9429-FD2BF40B8D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C65549-E96B-412F-9429-FD2BF40B8D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C65549-E96B-412F-9429-FD2BF40B8D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C65549-E96B-412F-9429-FD2BF40B8D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E40A982A-1DB4-4E44-ADE9-1DA83233AF16}
+	EndGlobalSection
+EndGlobal
