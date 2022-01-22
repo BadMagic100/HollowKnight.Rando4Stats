@@ -50,11 +50,17 @@
     <AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>-->
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Resources\Progress.png" />
+	</ItemGroup>
+	<ItemGroup>
 		<Reference Include="MagicUI">
 			<HintPath>$(HollowKnightRefs)/Mods/MagicUI/MagicUI.dll</HintPath>
 		</Reference>
 		<Reference Include="RandimizerMod">
 			<HintPath>$(HollowKnightRefs)/Mods/Randomizer 4/RandomizerMod.dll</HintPath>
+		</Reference>
+		<Reference Include="RandomizerCore">
+			<HintPath>$(HollowKnightRefs)/Mods/RandomizerCore/RandomizerCore.dll</HintPath>
 		</Reference>
 		<Reference Include="Assembly-CSharp">
 			<HintPath>$(HollowKnightRefs)/Assembly-CSharp.dll</HintPath>
@@ -330,10 +336,8 @@
 	<ItemGroup>
 		<None Include=".gitignore" />
 		<None Include="..\README.md" />
-		<None Include="Resources\.gitignore" />
 	</ItemGroup>
 	<ItemGroup>
-		<!-- For potential project references (other projects in the same solution) -->
-		<!--<ProjectReference Include="..\SFCore\SFCore.csproj" />-->
+	  <EmbeddedResource Include="Resources\Progress.png" />
 	</ItemGroup>
 </Project>
