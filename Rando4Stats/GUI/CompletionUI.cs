@@ -27,7 +27,7 @@ namespace RandoStats.GUI
         {
             TextObject? clipboardPrompt = cutsceneLayout?.GetElement<TextObject>("Clipboard Prompt");
             StatFormatRegistry.GenerateBasicStats();
-            GUIUtility.systemCopyBuffer = StatFormatRegistry.Format("$RACING_SIMPLE$");
+            GUIUtility.systemCopyBuffer = StatFormatRegistry.Format("$RACING_EXTENDED$");
             if (clipboardPrompt != null)
             {
                 clipboardPrompt.Text = "Copied!";
@@ -51,7 +51,7 @@ namespace RandoStats.GUI
 
                 Layout? targetLayout = StatLayoutHelper.GetLayoutForPosition(cutsceneLayout, StatPosition.TopLeft);
                 int gridColumns = StatLayoutHelper.GetDynamicGridColumnsForPosition(StatPosition.TopLeft);
-                StatGroupLayoutFactory factory = new ItemsObtainedStatGroupLayoutFactory(new());
+                StatGroupLayoutFactory factory = new ItemsObtainedLayoutFactory(new() { "ByPoolGroup" });
                 if (factory.ShouldDisplayForRandoSettings())
                 {
                     try

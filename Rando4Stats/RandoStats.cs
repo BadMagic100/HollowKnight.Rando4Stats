@@ -40,6 +40,7 @@ namespace RandoStats
         private void OnCompletionStart(On.GameCompletionScreen.orig_Start orig, GameCompletionScreen self)
         {
             PauseUI.DestroyLayout();
+            RecentItemsInterop.ToggleDisplay(false);
             CompletionUI.BuildLayout();
             orig(self);
         }

@@ -116,6 +116,7 @@ namespace RandoStats.GUI
                     {
                         HorizontalSpacing = StatLayoutHelper.HORIZONTAL_SPACING,
                         VerticalSpacing = StatLayoutHelper.VERTICAL_SPACING,
+                        HorizontalAlignment = HorizontalAlignment.Center,
                         ChildrenBeforeRollover = subcategoryColumns
                     };
                     foreach (IRandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))

@@ -33,6 +33,8 @@ jobs:
             Expand-Archive -Path Rando.zip -DestinationPath "API\Mods\Randomizer 4"
             Invoke-WebRequest -Uri "https://github.com/homothetyhk/RandomizerCore/releases/download/v1.0.2/RandomizerCore.zip" -OutFile RandoCore.zip
             Expand-Archive -Path RandoCore.zip -DestinationPath "API\Mods\RandomizerCore"
+            Invoke-WebRequest -Uri "https://github.com/homothetyhk/HollowKnight.ItemChanger/releases/download/v2.0.2/ItemChanger.zip" -OutFile IC.zip
+            Expand-Archive -Path IC.zip -DestinationPath "API\Mods\ItemChanger"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1

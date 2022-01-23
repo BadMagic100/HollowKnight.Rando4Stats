@@ -20,7 +20,7 @@ namespace RandoStats.Stats
         {
             {
                 "RACING_EXTENDED",
-                $"{{{NS_BUILT_IN}:{STAT_PERCENT}}} {{{NS_BUILT_IN}:{STAT_TIME}}} ({{TotalItemsObtained:{STAT_FRACTION}}})"
+                $"{{{NS_BUILT_IN}:{STAT_PERCENT}}} {{{NS_BUILT_IN}:{STAT_TIME}}} ({{ItemsObtainedTotal:{STAT_FRACTION}}})"
             },
             { "RACING_SIMPLE", $"{{{NS_BUILT_IN}:{STAT_PERCENT}}} {{{NS_BUILT_IN}:{STAT_TIME}}}" }
         };

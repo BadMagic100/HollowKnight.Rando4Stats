@@ -44,7 +44,7 @@ namespace RandoStats.Util
 
 			log.LogWarn($"{cleanItemName} not found in PoolDefs");
 
-			return PoolGroup.Unknown;
+			return PoolGroup.Other;
 		}
 
 		public static PoolGroup GetLocationPoolGroup(string location)
