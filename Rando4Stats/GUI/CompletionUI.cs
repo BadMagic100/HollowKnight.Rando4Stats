@@ -4,6 +4,7 @@ using MagicUI.Graphics;
 using Modding;
 using RandoStats.Stats;
 using RandoStats.Util;
+using System;
 using System.Linq;
 using UnityEngine;
 using Rando = RandomizerMod.RandomizerMod;
@@ -48,11 +49,33 @@ namespace RandoStats.GUI
                 cutsceneLayout = new LayoutRoot(false, false, "Completion Layout");
                 cutsceneLayout.ListenForHotkey(KeyCode.C, CopyStats, ModifierKeys.Ctrl);
 
+                Layout? targetLayout = StatLayoutHelper.GetLayoutForPosition(cutsceneLayout, StatPosition.TopLeft);
+                int gridColumns = StatLayoutHelper.GetDynamicGridColumnsForPosition(StatPosition.TopLeft);
+                StatGroupLayoutFactory factory = new ItemsObtainedStatGroupLayoutFactory(new());
+                if (factory.ShouldDisplayForRandoSettings())
+                {
+                    try
+                    {
+                        if (targetLayout != null)
+                        {
+                            targetLayout.Children.Add(factory.BuildLayout(cutsceneLayout, gridColumns));
+                        }
+                        else
+                        {
+                            factory.ComputeStatsOnly();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        log.LogError($"Unknown error calculating items obtained stats!\n{ex.StackTrace}");
+                    }
+                }
+
                 new TextObject(cutsceneLayout, "Clipboard Prompt")
                 {
                     Text = "Press Ctrl+C to copy completion",
                     FontSize = 18,
-                    Padding = new Padding(40, 0, 0, 125),
+                    Padding = new Padding(35, 0, 0, 125),
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Bottom
                 };
