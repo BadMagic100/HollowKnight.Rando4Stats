@@ -27,7 +27,7 @@ jobs:
             Invoke-WebRequest -Uri "https://files.catbox.moe/ut01ee.zip" -OutFile API.zip
             Expand-Archive -Path API.zip -DestinationPath API
             mkdir API\Mods
-            Get-Content MagicUI/ModDependencies.txt | ForEach-Object {
+            Get-Content RandoStats\ModDependencies.txt | ForEach-Object {
                 $folder,$uri = ($_ -split ' from ')[0,1]
                 Invoke-WebRequest -Uri $uri -OutFile tmp.zip
                 Expand-Archive -Path tmp.zip -DestinationPath "API\Mods\$folder"
