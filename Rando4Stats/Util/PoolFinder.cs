@@ -18,6 +18,12 @@ namespace RandoStats.Util
 				case "Split_Mothwing_Cloak":
 				case "Split_Crystal_Heart":
 					return PoolGroup.Skills;
+				case "Double_Mask_Shard":
+				case "Full_Mask":
+					return PoolGroup.MaskShards;
+				case "Double_Vessel_Fragment":
+				case "Full_Soul_Vessel":
+					return PoolGroup.VesselFragments;
 				case "Grimmchild1":
 				case "Grimmchild2":
 					return PoolGroup.Charms;
@@ -51,6 +57,24 @@ namespace RandoStats.Util
         {
 			string nameWithoutLocation = location.Split('-')[0];
 			return GetItemPoolGroup(nameWithoutLocation);
+        }
+
+		public static string GetLocationMapArea(string location)
+        {
+			if (Data.IsLocation(location))
+            {
+				return Data.GetLocationDef(location).MapArea;
+            }
+			return "Unknown";
+        }
+
+		public static string GetTransitionMapArea(string transition)
+        {
+			if (Data.IsTransition(transition))
+            {
+				return Data.GetTransitionDef(transition).MapArea;
+            }
+			return "Unknown";
         }
 	}
 }

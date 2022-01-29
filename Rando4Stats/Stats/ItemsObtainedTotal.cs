@@ -4,7 +4,7 @@ namespace RandoStats.Stats
 {
     public class ItemsObtainedTotal : PercentageStatistic
     {
-        public ItemsObtainedTotal(string label) : base(label, true) { }
+        public ItemsObtainedTotal(string label) : base(label) { }
 
         public override bool IsEnabled => true;
 

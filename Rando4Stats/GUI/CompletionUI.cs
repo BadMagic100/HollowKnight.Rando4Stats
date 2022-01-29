@@ -27,7 +27,7 @@ namespace RandoStats.GUI
         {
             TextObject? clipboardPrompt = cutsceneLayout?.GetElement<TextObject>("Clipboard Prompt");
             StatFormatRegistry.GenerateBasicStats();
-            GUIUtility.systemCopyBuffer = StatFormatRegistry.Format("$RACING_EXTENDED$");
+            GUIUtility.systemCopyBuffer = StatFormatRegistry.Format(RandoStats.Instance!.GlobalSettings.StatFormatString);
             if (clipboardPrompt != null)
             {
                 clipboardPrompt.Text = "Copied!";
@@ -49,9 +49,10 @@ namespace RandoStats.GUI
                 cutsceneLayout = new LayoutRoot(false, false, "Completion Layout");
                 cutsceneLayout.ListenForHotkey(KeyCode.C, CopyStats, ModifierKeys.Ctrl);
 
-                Layout? targetLayout = StatLayoutHelper.GetLayoutForPosition(cutsceneLayout, StatPosition.TopLeft);
-                int gridColumns = StatLayoutHelper.GetDynamicGridColumnsForPosition(StatPosition.TopLeft);
-                StatGroupLayoutFactory factory = new ItemsObtainedLayoutFactory(new() { "ByPoolGroup" });
+                StatLayoutData itemObtainedLayoutSettings = RandoStats.Instance!.GlobalSettings.ItemsObtainedLayoutSettings;
+                Layout? targetLayout = StatLayoutHelper.GetLayoutForPosition(cutsceneLayout, itemObtainedLayoutSettings.Position);
+                int gridColumns = StatLayoutHelper.GetDynamicGridColumnsForPosition(itemObtainedLayoutSettings.Position);
+                StatGroupLayoutFactory factory = new ItemsObtainedLayoutFactory(itemObtainedLayoutSettings.EnabledSubcategoryNames);
                 if (factory.ShouldDisplayForRandoSettings())
                 {
                     try

@@ -14,7 +14,7 @@ namespace RandoStats.GUI
 
         protected override IEnumerable<string> GetAllowedSubcategories() => new string[]
         {
-            "ByPoolGroup"
+            StandardSubcategories.ByPoolGroup
         };
 
         protected override IEnumerable<IRandomizerStatistic> GetRootStatistics() => new IRandomizerStatistic[]
@@ -26,7 +26,7 @@ namespace RandoStats.GUI
 
         protected override IEnumerable<IRandomizerStatistic> GetStatisticsForSubcategory(string subcategory) => subcategory switch
         {
-            "ByPoolGroup" => Enum.GetValues(typeof(PoolGroup)).OfType<PoolGroup>().Select(g => new ItemsObtainedByPoolGroup(g)),
+            StandardSubcategories.ByPoolGroup => Enum.GetValues(typeof(PoolGroup)).OfType<PoolGroup>().Select(g => new ItemsObtainedByPoolGroup(g)),
             _ => throw new NotImplementedException($"Subcategory {subcategory} not implemented. This probably means it was added to GetAllowedSubcategories but not here")
         };
     }

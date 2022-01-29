@@ -13,7 +13,7 @@ namespace RandoStats.Stats
 
         public override bool IsEnabled => GetTotal() > 0;
 
-        public ItemsObtainedByPoolGroup(PoolGroup group) : base(group.FriendlyName(), true)
+        public ItemsObtainedByPoolGroup(PoolGroup group) : base(group.FriendlyName())
         {
             this.group = group;
         }

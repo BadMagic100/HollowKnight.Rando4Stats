@@ -1,16 +1,19 @@
 ﻿using Modding;
 using RandoStats.GUI;
+using RandoStats.Settings;
 using System.Collections;
 using Rando = RandomizerMod.RandomizerMod;
 
 namespace RandoStats
 {
-    public class RandoStats : Mod
+    public class RandoStats : Mod, IGlobalSettings<RandoStatsGlobalSettings>
     {
         internal static RandoStats? Instance { get; private set; }
         private const string END_GAME_COMPLETION = "End_Game_Completion";
 
         public override string GetVersion() => GetType().Assembly.GetName().Version.ToString();
+
+        public RandoStatsGlobalSettings GlobalSettings { get; private set; } = new();
 
         public override void Initialize()
         {
@@ -57,5 +60,9 @@ namespace RandoStats
                 orig(self);
             }
         }
+
+        public void OnLoadGlobal(RandoStatsGlobalSettings s) => GlobalSettings = s;
+
+        public RandoStatsGlobalSettings OnSaveGlobal() => GlobalSettings;
     }
 }
