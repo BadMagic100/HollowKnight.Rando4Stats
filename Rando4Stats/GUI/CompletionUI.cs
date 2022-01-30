@@ -2,9 +2,12 @@
 using MagicUI.Elements;
 using MagicUI.Graphics;
 using Modding;
+using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Util;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Rando = RandomizerMod.RandomizerMod;
@@ -49,26 +52,33 @@ namespace RandoStats.GUI
                 cutsceneLayout = new LayoutRoot(false, false, "Completion Layout");
                 cutsceneLayout.ListenForHotkey(KeyCode.C, CopyStats, ModifierKeys.Ctrl);
 
-                StatLayoutData itemObtainedLayoutSettings = RandoStats.Instance!.GlobalSettings.ItemsObtainedLayoutSettings;
-                Layout? targetLayout = StatLayoutHelper.GetLayoutForPosition(cutsceneLayout, itemObtainedLayoutSettings.Position);
-                int gridColumns = StatLayoutHelper.GetDynamicGridColumnsForPosition(itemObtainedLayoutSettings.Position);
-                StatGroupLayoutFactory factory = new ItemsObtainedLayoutFactory(itemObtainedLayoutSettings.EnabledSubcategoryNames);
-                if (factory.ShouldDisplayForRandoSettings())
+                IEnumerable<IGrouping<StatPosition, StatGroupLayoutFactory>> factoriesByPosition = RandoStats.Instance!.GlobalSettings.LayoutFactories
+                    .OrderBy(x => x.Settings.Order)
+                    .GroupBy(x => x.Settings.Position);
+                foreach (IGrouping<StatPosition, StatGroupLayoutFactory> positionalGroup in factoriesByPosition)
                 {
-                    try
+                    Layout? targetLayout = StatLayoutHelper.GetLayoutForPosition(cutsceneLayout, positionalGroup.Key);
+                    int gridColumns = StatLayoutHelper.GetDynamicGridColumnsForPosition(positionalGroup.Key);
+                    foreach (StatGroupLayoutFactory factory in positionalGroup)
                     {
-                        if (targetLayout != null)
+                        if (factory.CanDisplay)
                         {
-                            targetLayout.Children.Add(factory.BuildLayout(cutsceneLayout, gridColumns));
+                            try
+                            {
+                                if (targetLayout != null)
+                                {
+                                    targetLayout.Children.Add(factory.BuildLayout(cutsceneLayout, gridColumns));
+                                }
+                                else
+                                {
+                                    factory.ComputeStatsOnly();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                log.LogError($"Unknown error calculating items obtained stats!\n{ex.StackTrace}");
+                            }
                         }
-                        else
-                        {
-                            factory.ComputeStatsOnly();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        log.LogError($"Unknown error calculating items obtained stats!\n{ex.StackTrace}");
                     }
                 }
 

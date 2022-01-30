@@ -1,5 +1,6 @@
 ﻿using MagicUI.Core;
 using MagicUI.Elements;
+using RandoStats.Settings;
 using RandoStats.Stats;
 using System.Collections.Generic;
 
@@ -8,32 +9,32 @@ namespace RandoStats.GUI
     /// <summary>
     /// Base class to build configurable layouts for collections of stats
     /// </summary>
-    internal abstract class StatGroupLayoutFactory
+    public abstract class StatGroupLayoutFactory
     {
         /// <summary>
-        /// A set of subcategories of stats to display
+        /// The settings to use to configure the layout
         /// </summary>
-        protected HashSet<string> EnabledSubcategories { get; private set; }
+        public StatLayoutSettings Settings { get; init; }
 
         /// <summary>
-        /// Constructs a layout factory. Note that to work with <see cref="StatLayoutHelper.GetLayoutBuilderFromSettings(StatLayoutData)"/>,
+        /// Whether the stat is eligible to display given the current randomizer settings
+        /// </summary>
+        public abstract bool CanDisplay { get; }
+
+        /// <summary>
+        /// The top-level section header for the stat group, such as "Items Obtained"
+        /// </summary>
+        public abstract string GroupName { get; }
+
+        /// <summary>
+        /// Constructs a layout factory. Note that to work with <see cref="StatLayoutHelper.GetLayoutBuilderFromSettings(StatLayoutSettings)"/>,
         /// you're expected to implement a constructor with this signature.
         /// </summary>
-        /// <param name="enabledSubcategories">A set of subcategories of stats to display</param>
-        public StatGroupLayoutFactory(HashSet<string> enabledSubcategories)
+        public StatGroupLayoutFactory(StatLayoutSettings settings)
         {
-            EnabledSubcategories = enabledSubcategories;
+            Settings = settings;
         }
 
-        /// <summary>
-        /// Determines whether the stat is eligible to display given the current randomizer settings
-        /// </summary>
-        public abstract bool ShouldDisplayForRandoSettings();
-
-        /// <summary>
-        /// Gets the top-level section header for the stat group, such as "Items Obtained"
-        /// </summary>
-        protected abstract string GetSectionHeader();
         /// <summary>
         /// Gets all the statistics that should display unconditionally.
         /// </summary>
@@ -63,9 +64,10 @@ namespace RandoStats.GUI
                     stat.GetContent();
                 }
             }
+            HashSet<string> enabledSubcategories = Settings.EnabledSubcategoryNames;
             foreach (string subcategory in GetAllowedSubcategories())
             {
-                if (EnabledSubcategories.Contains(subcategory))
+                if (enabledSubcategories.Contains(subcategory))
                 {
                     foreach (IRandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))
                     {
@@ -94,7 +96,7 @@ namespace RandoStats.GUI
             };
             layout.Children.Add(new TextObject(onLayout)
             {
-                Text = GetSectionHeader(),
+                Text = GroupName,
                 Font = UI.TrajanBold,
                 FontSize = StatLayoutHelper.FONT_SIZE_H1,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -108,9 +110,10 @@ namespace RandoStats.GUI
                 }
             }
 
+            HashSet<string> enabledSubcategories = Settings.EnabledSubcategoryNames;
             foreach (string subcategory in GetAllowedSubcategories())
             {
-                if (EnabledSubcategories.Contains(subcategory))
+                if (enabledSubcategories.Contains(subcategory))
                 {
                     Layout subcategoryGroupLayout = new DynamicUniformGrid(onLayout, $"{GetType().Name}_{subcategory}")
                     {

@@ -1,4 +1,5 @@
-﻿using RandoStats.Stats;
+﻿using RandoStats.Settings;
+using RandoStats.Stats;
 using RandoStats.Util;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,11 @@ namespace RandoStats.GUI
 {
     internal class ItemsObtainedLayoutFactory : StatGroupLayoutFactory
     {
-        public ItemsObtainedLayoutFactory(HashSet<string> enabledSubcategories) : base(enabledSubcategories) { }
+        public ItemsObtainedLayoutFactory(StatLayoutSettings settings) : base(settings) { }
 
-        public override bool ShouldDisplayForRandoSettings() => true;
+        public override bool CanDisplay => true;
+
+        public override string GroupName => "Items Obtained";
 
         protected override IEnumerable<string> GetAllowedSubcategories() => new string[]
         {
@@ -21,8 +24,6 @@ namespace RandoStats.GUI
         {
             new ItemsObtainedTotal("Total")
         };
-
-        protected override string GetSectionHeader() => "Items Obtained";
 
         protected override IEnumerable<IRandomizerStatistic> GetStatisticsForSubcategory(string subcategory) => subcategory switch
         {

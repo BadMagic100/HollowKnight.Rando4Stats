@@ -3,7 +3,7 @@ using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RandoStats
+namespace RandoStats.Settings
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum StatPosition
@@ -16,7 +16,7 @@ namespace RandoStats
         None
     }
 
-    public class StatLayoutData
+    public class StatLayoutSettings
     {
         private Dictionary<string, bool> enabledSubcategories = new();
         public Dictionary<string, bool> EnabledSubcategories
@@ -39,16 +39,16 @@ namespace RandoStats
         public int Order { get; set; } = 0;
 
         [JsonConstructor]
-        public StatLayoutData() { }
+        public StatLayoutSettings() { }
 
-        public StatLayoutData(HashSet<string> enabledSubcategories, StatPosition position, int sortOrder)
+        public StatLayoutSettings(HashSet<string> enabledSubcategories, StatPosition position, int sortOrder)
         {
             Position = position;
             EnabledSubcategories = enabledSubcategories.ToDictionary(x => x, _ => true);
             Order = sortOrder;
         }
 
-        public StatLayoutData(Dictionary<string, bool> enabledSubcategories, StatPosition position, int sortOrder)
+        public StatLayoutSettings(Dictionary<string, bool> enabledSubcategories, StatPosition position, int sortOrder)
         {
             Position = position;
             EnabledSubcategories = enabledSubcategories;

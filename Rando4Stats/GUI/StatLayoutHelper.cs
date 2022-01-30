@@ -1,5 +1,6 @@
 ﻿using MagicUI.Core;
 using MagicUI.Elements;
+using RandoStats.Settings;
 using System;
 
 namespace RandoStats.GUI
