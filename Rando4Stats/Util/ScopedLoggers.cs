@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace RandoStats.Util
 {
-    internal static class LogHelper
+    internal static class ScopedLoggers
     {
         public static Loggable GetLogger([CallerFilePath] string callingFile = "")
         {

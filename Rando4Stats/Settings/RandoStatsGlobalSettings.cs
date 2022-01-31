@@ -3,7 +3,9 @@ using RandoStats.GUI;
 using RandoStats.Stats;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace RandoStats.Settings
 {
@@ -25,25 +27,31 @@ namespace RandoStats.Settings
             target.EnabledSubcategories = input.EnabledSubcategories;
         }
 
-        [JsonIgnore]
-        internal IEnumerable<StatGroupLayoutFactory> LayoutFactories
+        private IEnumerable<StatGroupLayoutFactory> factories = Enumerable.Empty<StatGroupLayoutFactory>();
+        /// <summary>
+        /// Construct the factory list once, when the settings are fully deserialized
+        /// </summary>
+        [OnDeserialized]
+        private void ConstructLayoutFactories(StreamingContext context)
         {
-            get
+            List<StatGroupLayoutFactory> factories = new();
+            foreach (PropertyInfo prop in GetType().GetProperties())
             {
-                foreach (PropertyInfo prop in GetType().GetProperties())
+                if (prop.PropertyType == typeof(StatLayoutSettings))
                 {
-                    if (prop.PropertyType == typeof(StatLayoutSettings))
-                    {
-                        StatLayoutSettings settings = (StatLayoutSettings)prop.GetValue(this);
-                        string factoryTypeFullName = "RandoStats.GUI." + prop.Name.Replace("Settings", "Factory");
-                        Type factoryType = GetType().Assembly.GetType(factoryTypeFullName);
+                    StatLayoutSettings settings = (StatLayoutSettings)prop.GetValue(this);
+                    string factoryTypeFullName = "RandoStats.GUI." + prop.Name.Replace("Settings", "Factory");
+                    Type factoryType = GetType().Assembly.GetType(factoryTypeFullName);
 
-                        ConstructorInfo ctor = factoryType.GetConstructor(new Type[] { typeof(StatLayoutSettings) });
-                        StatGroupLayoutFactory factory = (StatGroupLayoutFactory)ctor.Invoke(new object[] { settings });
-                        yield return factory;
-                    }
+                    ConstructorInfo ctor = factoryType.GetConstructor(new Type[] { typeof(StatLayoutSettings) });
+                    StatGroupLayoutFactory factory = (StatGroupLayoutFactory)ctor.Invoke(new object[] { settings });
+                    factories.Add(factory);
                 }
             }
+            this.factories = factories;
         }
+
+        [JsonIgnore]
+        internal IEnumerable<StatGroupLayoutFactory> LayoutFactories => factories;
     }
 }

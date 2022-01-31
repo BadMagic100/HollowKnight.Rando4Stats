@@ -6,9 +6,9 @@ namespace RandoStats.GUI
 {
     internal class LabeledStatTextFactory
     {
-        private readonly IRandomizerStatistic stat;
+        private readonly RandomizerStatistic stat;
 
-        public LabeledStatTextFactory(IRandomizerStatistic stat)
+        public LabeledStatTextFactory(RandomizerStatistic stat)
         {
             this.stat = stat;
         }

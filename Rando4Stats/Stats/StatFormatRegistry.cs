@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Modding;
+using RandoStats.Util;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,6 +8,8 @@ namespace RandoStats.Stats
 {
     public static class StatFormatRegistry
     {
+        private static Loggable log = ScopedLoggers.GetLogger();
+
         public const string STAT_FULL = "Full";
         public const string STAT_PERCENT = "Percent";
         public const string STAT_OBTAINED = "Obtained";
@@ -63,6 +67,7 @@ namespace RandoStats.Stats
 
         public static string Format(string fstring)
         {
+            log.LogDebug("Stat registry: \n" + string.Join("\n", statRegistry.Select(kvp => $"{kvp.Key} - {kvp.Value}").ToArray()));
             foreach (string alias in aliasFinder.Matches(fstring).Cast<Match>().Select(x => x.Groups[1].Value).Distinct())
             {
                 fstring = fstring.Replace($"${alias}$", TryGetAlias(alias));

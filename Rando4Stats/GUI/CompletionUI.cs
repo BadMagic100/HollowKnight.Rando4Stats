@@ -6,7 +6,6 @@ using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Util;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace RandoStats.GUI
 {
     public static class CompletionUI
     {
-        private static readonly Loggable log = LogHelper.GetLogger();
+        private static readonly Loggable log = ScopedLoggers.GetLogger();
 
         private static LayoutRoot? cutsceneLayout;
         private static readonly TextureLoader textureLoader = new(typeof(RandoStats).Assembly, "RandoStats.Resources");
@@ -30,6 +29,7 @@ namespace RandoStats.GUI
         {
             TextObject? clipboardPrompt = cutsceneLayout?.GetElement<TextObject>("Clipboard Prompt");
             StatFormatRegistry.GenerateBasicStats();
+            StatsEngine.UpdateStatFormatRegistry();
             GUIUtility.systemCopyBuffer = StatFormatRegistry.Format(RandoStats.Instance!.GlobalSettings.StatFormatString);
             if (clipboardPrompt != null)
             {
@@ -68,10 +68,6 @@ namespace RandoStats.GUI
                                 if (targetLayout != null)
                                 {
                                     targetLayout.Children.Add(factory.BuildLayout(cutsceneLayout, gridColumns));
-                                }
-                                else
-                                {
-                                    factory.ComputeStatsOnly();
                                 }
                             }
                             catch (Exception ex)

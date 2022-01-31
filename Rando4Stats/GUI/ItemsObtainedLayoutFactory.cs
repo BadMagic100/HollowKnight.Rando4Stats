@@ -15,20 +15,19 @@ namespace RandoStats.GUI
 
         public override string GroupName => "Items Obtained";
 
-        protected override IEnumerable<string> GetAllowedSubcategories() => new string[]
-        {
-            StandardSubcategories.ByPoolGroup
-        };
-
-        protected override IEnumerable<IRandomizerStatistic> GetRootStatistics() => new IRandomizerStatistic[]
+        protected override IReadOnlyCollection<RandomizerStatistic> RootStatistics { get; init; } = new RandomizerStatistic[]
         {
             new ItemsObtainedTotal("Total")
         };
 
-        protected override IEnumerable<IRandomizerStatistic> GetStatisticsForSubcategory(string subcategory) => subcategory switch
+        protected override IReadOnlyCollection<string> AllowedSubcategories { get; init; } = new string[]
         {
-            StandardSubcategories.ByPoolGroup => Enum.GetValues(typeof(PoolGroup)).OfType<PoolGroup>().Select(g => new ItemsObtainedByPoolGroup(g)),
-            _ => throw new NotImplementedException($"Subcategory {subcategory} not implemented. This probably means it was added to GetAllowedSubcategories but not here")
+            StandardSubcategories.ByPoolGroup
+        };
+
+        protected override Dictionary<string, IReadOnlyCollection<RandomizerStatistic>> SubcategoryStatistics { get; init; } = new()
+        {
+            [StandardSubcategories.ByPoolGroup] = Enum.GetValues(typeof(PoolGroup)).OfType<PoolGroup>().Select(g => new ItemsObtainedByPoolGroup(g)).ToList()
         };
     }
 }

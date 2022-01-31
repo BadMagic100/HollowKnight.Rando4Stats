@@ -1,37 +1,36 @@
-﻿using Modding;
+﻿using ItemChanger;
+using Modding;
 using RandoStats.Util;
+using System.Collections.Generic;
 using System.Linq;
-using Rando = RandomizerMod.RandomizerMod;
 
 namespace RandoStats.Stats
 {
     public class ItemsObtainedByPoolGroup : PercentageStatistic
     {
-        private static readonly Loggable log = LogHelper.GetLogger();
+        private static readonly Loggable log = ScopedLoggers.GetLogger();
 
         private readonly PoolGroup group;
 
-        public override bool IsEnabled => GetTotal() > 0;
+        protected override string StatNamespace => base.StatNamespace + ":" + group.ToString();
+
+        public override bool IsEnabled => TotalSum > 0;
 
         public ItemsObtainedByPoolGroup(PoolGroup group) : base(group.FriendlyName())
         {
             this.group = group;
         }
 
-        protected override int GetObtained()
+        public override void HandlePlacement(AbstractPlacement placement)
         {
-            return Rando.RS.TrackerData.obtainedItems
-                .Select(i => Rando.RS.Context.itemPlacements[i])
-                .Where(p => PoolFinder.GetItemPoolGroup(p.item.Name) == group)
-                .SideEffect(x => log.LogDebug($"Counting item {x.item.Name} towards group {group} obtains"))
+            IEnumerable<AbstractItem> itemsInGroup = placement.Items
+                .Where(x => PoolFinder.GetItemPoolGroup(x.GetRandoPlacement().item.Name) == group);
+            ObtainedSum += itemsInGroup
+                .Where(x => x.WasEverObtained())
+                .SideEffect(x => log.LogDebug($"Counting item {x.GetRandoPlacement().item.Name} towards group {group} obtains"))
                 .Count();
-        }
-
-        protected override int GetTotal()
-        {
-            return Rando.RS.Context.itemPlacements
-                .Where(p => PoolFinder.GetItemPoolGroup(p.item.Name) == group)
-                .SideEffect(x => log.LogDebug($"Counting item {x.item.Name} towards group {group} total"))
+            TotalSum += itemsInGroup
+                .SideEffect(x => log.LogDebug($"Counting item {x.GetRandoPlacement().item.Name} towards group {group} total"))
                 .Count();
         }
     }

@@ -2,6 +2,7 @@
 using MagicUI.Elements;
 using RandoStats.Settings;
 using RandoStats.Stats;
+using System;
 using System.Collections.Generic;
 
 namespace RandoStats.GUI
@@ -27,6 +28,22 @@ namespace RandoStats.GUI
         public abstract string GroupName { get; }
 
         /// <summary>
+        /// The statistics that should display unconditionally
+        /// </summary>
+        protected abstract IReadOnlyCollection<RandomizerStatistic> RootStatistics { get; init; }
+
+        /// <summary>
+        /// The statistics that should display given a subcategory
+        /// </summary>
+        protected abstract Dictionary<string, IReadOnlyCollection<RandomizerStatistic>> SubcategoryStatistics { get; init; }
+
+        /// <summary>
+        /// All subcategories that are allowed for this stat group. These cases, and only these cases, should be handled by
+        /// <see cref="SubcategoryStatistics"/>.
+        /// </summary>
+        protected abstract IReadOnlyCollection<string> AllowedSubcategories { get; init; }
+
+        /// <summary>
         /// Constructs a layout factory. Note that to work with <see cref="StatLayoutHelper.GetLayoutBuilderFromSettings(StatLayoutSettings)"/>,
         /// you're expected to implement a constructor with this signature.
         /// </summary>
@@ -36,46 +53,37 @@ namespace RandoStats.GUI
         }
 
         /// <summary>
-        /// Gets all the statistics that should display unconditionally.
-        /// </summary>
-        protected abstract IEnumerable<IRandomizerStatistic> GetRootStatistics();
-        /// <summary>
-        /// Gets all subcategories that are allowed for this stat group. These cases, and only these cases, should be handled by
-        /// <see cref="GetStatisticsForSubcategory(string)"/>.
-        /// </summary>
-        protected abstract IEnumerable<string> GetAllowedSubcategories();
-        /// <summary>
         /// Gets all the statistics that should display given a subcategory. This expects you to
         /// </summary>
         /// <param name="subcategory">The subcategory name.</param>
-        protected abstract IEnumerable<IRandomizerStatistic> GetStatisticsForSubcategory(string subcategory);
-
-        /// <summary>
-        /// Computes the stats only, without creating any UI elements or layout. This is specifically for adding
-        /// stats to the stat registry.
-        /// </summary>
-        public void ComputeStatsOnly()
+        private IEnumerable<RandomizerStatistic> GetStatisticsForSubcategory(string subcategory)
         {
-            foreach (IRandomizerStatistic stat in GetRootStatistics())
+            if (SubcategoryStatistics.ContainsKey(subcategory))
             {
-                if (stat.IsEnabled)
-                {
-                    stat.GetLabel();
-                    stat.GetContent();
-                }
+                return SubcategoryStatistics[subcategory];
             }
+            else
+            {
+                throw new NotImplementedException($"{subcategory} is not an implemented subcategory for {GetType().Name};" +
+                    $" you need to add it to your {nameof(SubcategoryStatistics)}");
+            }
+        }
+
+        public void HookStatsEngine(bool transient = true)
+        {
+            foreach (RandomizerStatistic stat in RootStatistics)
+            {
+                StatsEngine.Hook(stat, transient);
+            }
+            // slight optimization - this iterates through the subcategory dictionary, so we'll only get it once
             HashSet<string> enabledSubcategories = Settings.EnabledSubcategoryNames;
-            foreach (string subcategory in GetAllowedSubcategories())
+            foreach (string subcategory in AllowedSubcategories)
             {
                 if (enabledSubcategories.Contains(subcategory))
                 {
-                    foreach (IRandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))
+                    foreach (RandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))
                     {
-                        if (stat.IsEnabled)
-                        {
-                            stat.GetLabel();
-                            stat.GetContent();
-                        }
+                        StatsEngine.Hook(stat, transient);
                     }
                 }
             }
@@ -102,7 +110,7 @@ namespace RandoStats.GUI
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center
             });
-            foreach (IRandomizerStatistic stat in GetRootStatistics())
+            foreach (RandomizerStatistic stat in RootStatistics)
             {
                 if (stat.IsEnabled)
                 {
@@ -111,7 +119,7 @@ namespace RandoStats.GUI
             }
 
             HashSet<string> enabledSubcategories = Settings.EnabledSubcategoryNames;
-            foreach (string subcategory in GetAllowedSubcategories())
+            foreach (string subcategory in AllowedSubcategories)
             {
                 if (enabledSubcategories.Contains(subcategory))
                 {
@@ -122,7 +130,7 @@ namespace RandoStats.GUI
                         HorizontalAlignment = HorizontalAlignment.Center,
                         ChildrenBeforeRollover = subcategoryColumns
                     };
-                    foreach (IRandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))
+                    foreach (RandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))
                     {
                         if (stat.IsEnabled)
                         {

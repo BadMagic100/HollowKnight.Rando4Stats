@@ -1,4 +1,5 @@
-﻿using Rando = RandomizerMod.RandomizerMod;
+﻿using ItemChanger;
+using System.Linq;
 
 namespace RandoStats.Stats
 {
@@ -8,14 +9,10 @@ namespace RandoStats.Stats
 
         public override bool IsEnabled => true;
 
-        protected override int GetObtained()
+        public override void HandlePlacement(AbstractPlacement placement)
         {
-            return Rando.RS.TrackerData.obtainedItems.Count;
-        }
-
-        protected override int GetTotal()
-        {
-            return Rando.RS.Context.itemPlacements.Count;
+            ObtainedSum += placement.Items.Count(x => x.WasEverObtained());
+            TotalSum += placement.Items.Count;
         }
     }
 }

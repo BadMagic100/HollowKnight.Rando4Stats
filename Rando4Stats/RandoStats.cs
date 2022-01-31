@@ -1,6 +1,7 @@
 ﻿using Modding;
 using RandoStats.GUI;
 using RandoStats.Settings;
+using RandoStats.Stats;
 using System.Collections;
 using Rando = RandomizerMod.RandomizerMod;
 
@@ -31,12 +32,19 @@ namespace RandoStats
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)
         {
             PauseUI.BuildLayout();
+            StatsEngine.Initialize();
+            foreach (StatGroupLayoutFactory factory in GlobalSettings.LayoutFactories)
+            {
+                factory.HookStatsEngine();
+            }
+            StatsEngine.BeginComputeLongLived();
             orig(self);
         }
 
         private IEnumerator OnSaveClosed(On.QuitToMenu.orig_Start orig, QuitToMenu self)
         {
             PauseUI.DestroyLayout();
+            StatsEngine.FinalizeComputeLongLived();
             return orig(self);
         }
 
@@ -44,6 +52,7 @@ namespace RandoStats
         {
             PauseUI.DestroyLayout();
             RecentItemsInterop.ToggleDisplay(false);
+            StatsEngine.ComputeTransient();
             CompletionUI.BuildLayout();
             orig(self);
         }

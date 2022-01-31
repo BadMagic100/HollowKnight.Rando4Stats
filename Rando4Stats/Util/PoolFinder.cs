@@ -1,13 +1,19 @@
 ﻿using Modding;
 using RandomizerMod.RandomizerData;
 using System;
+using System.Collections.Generic;
 
 namespace RandoStats.Util
 {
     // group finding logic adapted from Phenomenol https://github.com/syyePhenomenol/HollowKnight.MapModS/blob/08f64d3454d8cdbc62773d44d20e6fbec08a9055/MapModS/Data/DataLoader.cs
     public static class PoolFinder
     {
-		private static Loggable log = LogHelper.GetLogger();
+		private static Loggable log = ScopedLoggers.GetLogger();
+
+		private static readonly HashSet<string> ShopNames = new(new string[] {
+			"Sly", "Sly_(Key)", "Iselda", "Salubra", "Salubra_(Requires_Charms)",
+			"Leg_Eater", "Grubfather", "Seer", "Egg_Shop" 
+		});
 
 		public static PoolGroup GetItemPoolGroup(string cleanItemName)
 		{
@@ -55,6 +61,10 @@ namespace RandoStats.Util
 
 		public static PoolGroup GetLocationPoolGroup(string location)
         {
+			if (ShopNames.Contains(location))
+            {
+				return PoolGroup.Shops;
+            }
 			string nameWithoutLocation = location.Split('-')[0];
 			return GetItemPoolGroup(nameWithoutLocation);
         }
