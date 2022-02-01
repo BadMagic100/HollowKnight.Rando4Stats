@@ -1,4 +1,5 @@
 ﻿using ItemChanger;
+using ItemChanger.Items;
 using Modding;
 using RandoStats.Util;
 using System.Collections.Generic;
@@ -24,6 +25,9 @@ namespace RandoStats.Stats
         public override void HandlePlacement(AbstractPlacement placement)
         {
             IEnumerable<AbstractItem> itemsInGroup = placement.Items
+                // ignore start geo - in theory a connection could add other SpawnGeoItems, but in reality it's unlikely because like... you can just increase
+                // min and max start geo as desired, so why would you
+                .Where(x => !(x.GetRandoPlacement().location.Name == "Start" && x is SpawnGeoItem))
                 .Where(x => PoolFinder.GetItemPoolGroup(x.GetRandoPlacement().item.Name) == group);
             ObtainedSum += itemsInGroup
                 .Where(x => x.WasEverObtained())
