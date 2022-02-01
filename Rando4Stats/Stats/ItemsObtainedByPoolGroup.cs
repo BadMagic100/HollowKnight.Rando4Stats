@@ -24,17 +24,17 @@ namespace RandoStats.Stats
 
         public override void HandlePlacement(AbstractPlacement placement)
         {
+            // ignore start geo - in theory a connection could add other SpawnGeoItems, but in reality it's unlikely because like... you can just increase
+            // min and max start geo as desired, so why would you
             IEnumerable<AbstractItem> itemsInGroup = placement.Items
-                // ignore start geo - in theory a connection could add other SpawnGeoItems, but in reality it's unlikely because like... you can just increase
-                // min and max start geo as desired, so why would you
-                .Where(x => !(x.GetRandoPlacement().location.Name == "Start" && x is SpawnGeoItem))
-                .Where(x => PoolFinder.GetItemPoolGroup(x.GetRandoPlacement().item.Name) == group);
+                .Where(x => !(x.RandoLocation() == "Start" && x is SpawnGeoItem))
+                .Where(x => PoolFinder.GetItemPoolGroup(x.RandoItem()) == group);
             ObtainedSum += itemsInGroup
                 .Where(x => x.WasEverObtained())
-                .SideEffect(x => log.LogDebug($"Counting item {x.GetRandoPlacement().item.Name} towards group {group} obtains"))
+                .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()} towards group {group} obtains"))
                 .Count();
             TotalSum += itemsInGroup
-                .SideEffect(x => log.LogDebug($"Counting item {x.GetRandoPlacement().item.Name} towards group {group} total"))
+                .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()} towards group {group} total"))
                 .Count();
         }
     }
