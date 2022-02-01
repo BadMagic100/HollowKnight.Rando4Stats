@@ -41,7 +41,7 @@ namespace RandoStats.Stats
         /// </summary>
         public abstract void RegisterFormatterStats();
 
-        internal void OnLongLivedPlacementVisited(VisitStateChangedEventArgs args)
+        internal void OnLongLivedItemObtained(int _, ReadOnlyGiveEventArgs args)
         {
             HandlePlacement(args.Placement);
         }

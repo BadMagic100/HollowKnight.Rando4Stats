@@ -49,7 +49,7 @@ namespace RandoStats.Stats
             foreach (RandomizerStatistic stat in longLivedStats)
             {
                 stat.BeginCompute();
-                RandoPlacementTag.OnRandoPlacementVisitStateChanged += stat.OnLongLivedPlacementVisited;
+                RandoItemTag.AfterRandoItemGive += stat.OnLongLivedItemObtained;
             }
         }
 
@@ -60,7 +60,7 @@ namespace RandoStats.Stats
         {
             foreach (RandomizerStatistic stat in longLivedStats)
             {
-                RandoPlacementTag.OnRandoPlacementVisitStateChanged -= stat.OnLongLivedPlacementVisited;
+                RandoItemTag.AfterRandoItemGive -= stat.OnLongLivedItemObtained;
                 stat.FinalizeCompute();
             }
         }
