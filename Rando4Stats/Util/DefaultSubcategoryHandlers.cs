@@ -6,16 +6,16 @@ using System.Collections.Generic;
 namespace RandoStats.Util
 {
     // group finding logic adapted from Phenomenol https://github.com/syyePhenomenol/HollowKnight.MapModS/blob/08f64d3454d8cdbc62773d44d20e6fbec08a9055/MapModS/Data/DataLoader.cs
-    public static class PoolFinder
+    public static class DefaultSubcategoryHandlers
     {
-		private static Loggable log = ScopedLoggers.GetLogger();
+		private static readonly Loggable log = ScopedLoggers.GetLogger();
 
 		private static readonly HashSet<string> ShopNames = new(new string[] {
 			"Sly", "Sly_(Key)", "Iselda", "Salubra", "Salubra_(Requires_Charms)",
 			"Leg_Eater", "Grubfather", "Seer", "Egg_Shop" 
 		});
 
-		public static PoolGroup GetItemPoolGroup(string cleanItemName)
+		public static PoolGroup? GetItemPoolGroup(string cleanItemName)
 		{
 			switch (cleanItemName)
 			{
@@ -56,10 +56,10 @@ namespace RandoStats.Util
 
 			log.LogWarn($"{cleanItemName} not found in PoolDefs");
 
-			return PoolGroup.Other;
+			return null;
 		}
 
-		public static PoolGroup GetLocationPoolGroup(string location)
+		public static PoolGroup? GetLocationPoolGroup(string location)
         {
 			if (ShopNames.Contains(location))
             {
@@ -69,22 +69,22 @@ namespace RandoStats.Util
 			return GetItemPoolGroup(nameWithoutLocation);
         }
 
-		public static string GetLocationMapArea(string location)
+		public static string? GetLocationMapArea(string location)
         {
 			if (Data.IsLocation(location))
             {
 				return Data.GetLocationDef(location).MapArea;
             }
-			return "Unknown";
+			return null;
         }
 
-		public static string GetTransitionMapArea(string transition)
+		public static string? GetTransitionMapArea(string transition)
         {
 			if (Data.IsTransition(transition))
             {
 				return Data.GetTransitionDef(transition).MapArea;
             }
-			return "Unknown";
+			return null;
         }
 	}
 }

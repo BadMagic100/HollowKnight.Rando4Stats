@@ -1,4 +1,5 @@
 ﻿using Modding;
+using RandoStats.API;
 using RandoStats.GUI;
 using RandoStats.Settings;
 using RandoStats.Stats;
@@ -26,6 +27,9 @@ namespace RandoStats
             On.GameCompletionScreen.Start += OnCompletionStart;
             On.InputHandler.CutsceneInput += HandleCutsceneInput;
 
+            SubcategoryApi.AddPoolGroup("Levers");
+            SubcategoryApi.HookItemPoolGroups((item) => item.StartsWith("Lever-") || item.StartsWith("Switch-") ? "Levers" : null);
+
             Log("Initialized");
         }
 
@@ -33,7 +37,8 @@ namespace RandoStats
         {
             PauseUI.BuildLayout();
             StatsEngine.Initialize();
-            foreach (StatGroupLayoutFactory factory in GlobalSettings.LayoutFactories)
+            StatLayoutHelper.ConstructLayoutFactories(GlobalSettings);
+            foreach (StatGroupLayoutFactory factory in StatLayoutHelper.LayoutFactories)
             {
                 factory.HookStatsEngine();
             }

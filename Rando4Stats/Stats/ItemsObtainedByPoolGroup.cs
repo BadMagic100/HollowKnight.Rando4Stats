@@ -1,6 +1,7 @@
 ﻿using ItemChanger;
 using ItemChanger.Items;
 using Modding;
+using RandoStats.API;
 using RandoStats.Util;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +12,17 @@ namespace RandoStats.Stats
     {
         private static readonly Loggable log = ScopedLoggers.GetLogger();
 
-        private readonly PoolGroup group;
+        private readonly string groupFriendlyName;
+        private readonly string groupShortName;
 
-        protected override string StatNamespace => base.StatNamespace + ":" + group.ToString();
+        protected override string StatNamespace => base.StatNamespace + ":" + groupShortName;
 
         public override bool IsEnabled => TotalSum > 0;
 
-        public ItemsObtainedByPoolGroup(PoolGroup group) : base(group.FriendlyName())
+        public ItemsObtainedByPoolGroup(string groupFriendlyName) : base(groupFriendlyName)
         {
-            this.group = group;
+            this.groupFriendlyName = groupFriendlyName;
+            groupShortName = groupFriendlyName.Replace(" ", "");
         }
 
         public override void HandlePlacement(AbstractPlacement placement)
@@ -28,13 +31,13 @@ namespace RandoStats.Stats
             // min and max start geo as desired, so why would you
             IEnumerable<AbstractItem> itemsInGroup = placement.Items
                 .Where(x => !(x.RandoLocation() == "Start" && x is SpawnGeoItem))
-                .Where(x => PoolFinder.GetItemPoolGroup(x.RandoItem()) == group);
+                .Where(x => SubcategoryApi.GetItemPoolGroup(x.RandoItem()) == groupFriendlyName);
             ObtainedSum += itemsInGroup
                 .Where(x => x.WasEverObtained())
-                .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()} towards group {group} obtains"))
+                .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()} towards group {groupShortName} obtains"))
                 .Count();
             TotalSum += itemsInGroup
-                .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()} towards group {group} total"))
+                .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()} towards group {groupShortName} total"))
                 .Count();
         }
     }

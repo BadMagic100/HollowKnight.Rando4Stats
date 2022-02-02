@@ -2,6 +2,9 @@
 using MagicUI.Elements;
 using RandoStats.Settings;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace RandoStats.GUI
 {
@@ -63,5 +66,28 @@ namespace RandoStats.GUI
             StatPosition.TopCenter => 6,
             _ => 2
         };
+
+        private static IEnumerable<StatGroupLayoutFactory> factoryCache = Enumerable.Empty<StatGroupLayoutFactory>();
+
+        internal static void ConstructLayoutFactories(RandoStatsGlobalSettings fromSettings)
+        {
+            List<StatGroupLayoutFactory> factories = new();
+            foreach (PropertyInfo prop in fromSettings.GetType().GetProperties())
+            {
+                if (prop.PropertyType == typeof(StatLayoutSettings))
+                {
+                    StatLayoutSettings settings = (StatLayoutSettings)prop.GetValue(fromSettings);
+                    string factoryTypeFullName = "RandoStats.GUI." + prop.Name.Replace("Settings", "Factory");
+                    Type factoryType = fromSettings.GetType().Assembly.GetType(factoryTypeFullName);
+
+                    ConstructorInfo ctor = factoryType.GetConstructor(new Type[] { typeof(StatLayoutSettings) });
+                    StatGroupLayoutFactory factory = (StatGroupLayoutFactory)ctor.Invoke(new object[] { settings });
+                    factories.Add(factory);
+                }
+            }
+            factoryCache = factories;
+        }
+
+        internal static IEnumerable<StatGroupLayoutFactory> LayoutFactories => factoryCache;
     }
 }

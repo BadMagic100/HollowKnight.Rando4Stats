@@ -1,11 +1,5 @@
-﻿using Newtonsoft.Json;
-using RandoStats.GUI;
-using RandoStats.Stats;
-using System;
+﻿using RandoStats.Stats;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace RandoStats.Settings
 {
@@ -26,32 +20,5 @@ namespace RandoStats.Settings
             target.Order = input.Order;
             target.EnabledSubcategories = input.EnabledSubcategories;
         }
-
-        private IEnumerable<StatGroupLayoutFactory> factories = Enumerable.Empty<StatGroupLayoutFactory>();
-        /// <summary>
-        /// Construct the factory list once, when the settings are fully deserialized
-        /// </summary>
-        [OnDeserialized]
-        private void ConstructLayoutFactories(StreamingContext context)
-        {
-            List<StatGroupLayoutFactory> factories = new();
-            foreach (PropertyInfo prop in GetType().GetProperties())
-            {
-                if (prop.PropertyType == typeof(StatLayoutSettings))
-                {
-                    StatLayoutSettings settings = (StatLayoutSettings)prop.GetValue(this);
-                    string factoryTypeFullName = "RandoStats.GUI." + prop.Name.Replace("Settings", "Factory");
-                    Type factoryType = GetType().Assembly.GetType(factoryTypeFullName);
-
-                    ConstructorInfo ctor = factoryType.GetConstructor(new Type[] { typeof(StatLayoutSettings) });
-                    StatGroupLayoutFactory factory = (StatGroupLayoutFactory)ctor.Invoke(new object[] { settings });
-                    factories.Add(factory);
-                }
-            }
-            this.factories = factories;
-        }
-
-        [JsonIgnore]
-        internal IEnumerable<StatGroupLayoutFactory> LayoutFactories => factories;
     }
 }

@@ -49,10 +49,12 @@ namespace RandoStats.GUI
                 log.Log("Starting stat computation and layout");
 
                 holdToSkipLock = false;
+                pressStartTime = 0;
+
                 cutsceneLayout = new LayoutRoot(false, false, "Completion Layout");
                 cutsceneLayout.ListenForHotkey(KeyCode.C, CopyStats, ModifierKeys.Ctrl);
 
-                IEnumerable<IGrouping<StatPosition, StatGroupLayoutFactory>> factoriesByPosition = RandoStats.Instance!.GlobalSettings.LayoutFactories
+                IEnumerable<IGrouping<StatPosition, StatGroupLayoutFactory>> factoriesByPosition = StatLayoutHelper.LayoutFactories
                     .OrderBy(x => x.Settings.Order)
                     .GroupBy(x => x.Settings.Position);
                 foreach (IGrouping<StatPosition, StatGroupLayoutFactory> positionalGroup in factoriesByPosition)
