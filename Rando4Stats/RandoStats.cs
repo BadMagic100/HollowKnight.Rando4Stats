@@ -1,6 +1,6 @@
 ﻿using Modding;
-using RandoStats.API;
 using RandoStats.GUI;
+using RandoStats.Interop;
 using RandoStats.Settings;
 using RandoStats.Stats;
 using System.Collections;
@@ -17,18 +17,19 @@ namespace RandoStats
 
         public RandoStatsGlobalSettings GlobalSettings { get; private set; } = new();
 
+        public RandoStats() : base()
+        {
+            Instance = this;
+        }
+
         public override void Initialize()
         {
             Log("Initializing");
 
-            Instance = this;
             On.HeroController.Awake += OnSaveOpened;
             On.QuitToMenu.Start += OnSaveClosed;
             On.GameCompletionScreen.Start += OnCompletionStart;
             On.InputHandler.CutsceneInput += HandleCutsceneInput;
-
-            SubcategoryApi.AddPoolGroup("Levers");
-            SubcategoryApi.HookItemPoolGroups((item) => item.StartsWith("Lever-") || item.StartsWith("Switch-") ? "Levers" : null);
 
             Log("Initialized");
         }
@@ -49,6 +50,8 @@ namespace RandoStats
         private IEnumerator OnSaveClosed(On.QuitToMenu.orig_Start orig, QuitToMenu self)
         {
             PauseUI.DestroyLayout();
+            BenchwarpInterop.UnhideSceneName();
+
             StatsEngine.FinalizeComputeLongLived();
             return orig(self);
         }
@@ -57,6 +60,8 @@ namespace RandoStats
         {
             PauseUI.DestroyLayout();
             RecentItemsInterop.ToggleDisplay(false);
+            BenchwarpInterop.TempHideSceneName();
+
             StatsEngine.ComputeTransient();
             CompletionUI.BuildLayout();
             orig(self);

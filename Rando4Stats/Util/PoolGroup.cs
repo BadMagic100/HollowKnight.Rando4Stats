@@ -33,13 +33,12 @@ namespace RandoStats.Util
         LoreTablets,
 
         // stuff that we have custom handling for
-        Shops,
-        Other
+        Shops
     }
 
     public static class PoolExtensions
     {
-        private static readonly Regex nameFormatter = new Regex(@"([^A-Z])(?=[A-Z])");
+        private static readonly Regex nameFormatter = new(@"([^A-Z])(?=[A-Z])");
 
         public static string FriendlyName(this PoolGroup group)
         {

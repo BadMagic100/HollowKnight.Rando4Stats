@@ -1,7 +1,7 @@
 ﻿using MonoMod.ModInterop;
 using System;
 
-namespace RandoStats
+namespace RandoStats.Interop
 {
     internal static class RecentItemsInterop
     {

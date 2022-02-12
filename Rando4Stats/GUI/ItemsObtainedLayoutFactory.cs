@@ -1,6 +1,7 @@
-﻿using RandoStats.API;
-using RandoStats.Settings;
+﻿using RandoStats.Settings;
 using RandoStats.Stats;
+using RandoStats.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +27,10 @@ namespace RandoStats.GUI
 
         protected override Dictionary<string, IReadOnlyCollection<RandomizerStatistic>> SubcategoryStatistics { get; init; } = new()
         {
-            [StandardSubcategories.ByPoolGroup] = SubcategoryApi.GetPoolGroups().Select(g => new ItemsObtainedByPoolGroup(g)).ToList()
+            [StandardSubcategories.ByPoolGroup] = Enum.GetValues(typeof(PoolGroup))
+                .OfType<PoolGroup>().Select(g => g.FriendlyName())
+                .Append("Other")
+                .Select(g => new ItemsObtainedByPoolGroup(g)).ToList()
         };
     }
 }

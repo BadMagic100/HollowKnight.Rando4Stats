@@ -12,7 +12,7 @@ namespace RandoStats.Util
 
 		private static readonly HashSet<string> ShopNames = new(new string[] {
 			"Sly", "Sly_(Key)", "Iselda", "Salubra", "Salubra_(Requires_Charms)",
-			"Leg_Eater", "Grubfather", "Seer", "Egg_Shop" 
+			"Leg_Eater", "Grubfather", "Seer", "Egg_Shop"
 		});
 
 		public static PoolGroup? GetItemPoolGroup(string cleanItemName)

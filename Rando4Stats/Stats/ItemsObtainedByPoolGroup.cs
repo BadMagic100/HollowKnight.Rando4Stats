@@ -1,7 +1,6 @@
 ﻿using ItemChanger;
 using ItemChanger.Items;
 using Modding;
-using RandoStats.API;
 using RandoStats.Util;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +30,7 @@ namespace RandoStats.Stats
             // min and max start geo as desired, so why would you
             IEnumerable<AbstractItem> itemsInGroup = placement.Items
                 .Where(x => !(x.RandoLocation() == "Start" && x is SpawnGeoItem))
-                .Where(x => SubcategoryApi.GetItemPoolGroup(x.RandoItem()) == groupFriendlyName);
+                .Where(x => (DefaultSubcategoryHandlers.GetItemPoolGroup(x.RandoItem())?.FriendlyName() ?? "Other") == groupFriendlyName);
             ObtainedSum += itemsInGroup
                 .Where(x => x.WasEverObtained())
                 .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()} towards group {groupShortName} obtains"))
