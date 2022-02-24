@@ -1,6 +1,6 @@
 ﻿using ItemChanger;
-using RandomizerCore;
 using RandomizerMod.IC;
+using RandomizerMod.RC;
 
 namespace RandoStats.Util
 {
@@ -17,12 +17,12 @@ namespace RandoStats.Util
 
         public static string RandoItem(this AbstractItem item)
         {
-            return item.RandoPlacement().item.Name ?? "";
+            return item.RandoPlacement().Item.Name ?? "";
         }
 
         public static string RandoLocation(this AbstractItem item)
         {
-            return item.RandoPlacement().location.Name ?? "";
+            return item.RandoPlacement().Location.Name ?? "";
         }
     }
 }
