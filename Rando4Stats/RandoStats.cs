@@ -1,5 +1,6 @@
 ﻿using Modding;
 using RandoStats.GUI;
+using RandoStats.GUI.StatLayouts;
 using RandoStats.Interop;
 using RandoStats.Settings;
 using RandoStats.Stats;

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CMI = ConnectionMetadataInjector.ConnectionMetadataInjector;
 
-namespace RandoStats.Stats
+namespace RandoStats.Stats.ItemsObtained
 {
     public class ItemsObtainedByPoolGroup : PercentageStatistic
     {

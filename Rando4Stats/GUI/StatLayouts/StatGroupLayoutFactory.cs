@@ -5,7 +5,7 @@ using RandoStats.Stats;
 using System;
 using System.Collections.Generic;
 
-namespace RandoStats.GUI
+namespace RandoStats.GUI.StatLayouts
 {
     /// <summary>
     /// Base class to build configurable layouts for collections of stats

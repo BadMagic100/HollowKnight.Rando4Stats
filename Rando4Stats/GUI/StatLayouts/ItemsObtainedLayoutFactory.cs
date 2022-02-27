@@ -4,12 +4,13 @@ using ItemChanger;
 using ItemChanger.Items;
 using RandoStats.Settings;
 using RandoStats.Stats;
+using RandoStats.Stats.ItemsObtained;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using CMI = ConnectionMetadataInjector.ConnectionMetadataInjector;
 
-namespace RandoStats.GUI
+namespace RandoStats.GUI.StatLayouts
 {
     internal class ItemsObtainedLayoutFactory : StatGroupLayoutFactory
     {
@@ -46,7 +47,7 @@ namespace RandoStats.GUI
         {
             [StandardSubcategories.ByPoolGroup] = BuiltInGroups()
                 .Concat(ConnectionProvidedGroups().Except(BuiltInGroups()))
-                .Append("Other")
+                .Append(SubcategoryFinder.OTHER)
                 .Select(g => new ItemsObtainedByPoolGroup(g)).ToList()
         };
     }

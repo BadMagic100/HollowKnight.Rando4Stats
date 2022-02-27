@@ -2,6 +2,7 @@
 using MagicUI.Elements;
 using MagicUI.Graphics;
 using Modding;
+using RandoStats.GUI.StatLayouts;
 using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Util;

@@ -1,5 +1,6 @@
 ﻿using MagicUI.Core;
 using MagicUI.Elements;
+using RandoStats.GUI.StatLayouts;
 using RandoStats.Settings;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace RandoStats.GUI
                 if (prop.PropertyType == typeof(StatLayoutSettings))
                 {
                     StatLayoutSettings settings = (StatLayoutSettings)prop.GetValue(fromSettings);
-                    string factoryTypeFullName = "RandoStats.GUI." + prop.Name.Replace("Settings", "Factory");
+                    string factoryTypeFullName = "RandoStats.GUI.StatLayouts." + prop.Name.Replace("Settings", "Factory");
                     Type factoryType = fromSettings.GetType().Assembly.GetType(factoryTypeFullName);
 
                     ConstructorInfo ctor = factoryType.GetConstructor(new Type[] { typeof(StatLayoutSettings) });

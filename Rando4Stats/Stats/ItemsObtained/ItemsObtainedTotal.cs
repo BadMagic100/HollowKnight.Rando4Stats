@@ -4,7 +4,7 @@ using ItemChanger.Items;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RandoStats.Stats
+namespace RandoStats.Stats.ItemsObtained
 {
     public class ItemsObtainedTotal : PercentageStatistic
     {
