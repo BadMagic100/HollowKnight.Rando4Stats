@@ -46,7 +46,7 @@ namespace RandoStats.GUI
         {
             if (Rando.RS.Context != null)
             {
-                log.Log("Starting stat computation and layout");
+                log.Log("Starting stat layout");
 
                 holdToSkipLock = false;
                 pressStartTime = 0;
@@ -102,7 +102,7 @@ namespace RandoStats.GUI
                     VerticalAlignment = VerticalAlignment.Bottom
                 };
 
-                log.Log("Finished stat computation and layout");
+                log.Log("Finished stat layout");
             }
             else
             {

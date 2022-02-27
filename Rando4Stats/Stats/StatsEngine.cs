@@ -35,7 +35,7 @@ namespace RandoStats.Stats
             }
         }
 
-        private static IEnumerable<AbstractPlacement> GetEligiblePlacements()
+        public static IEnumerable<AbstractPlacement> GetEligiblePlacements()
         {
             return Ref.Settings.GetPlacements()
                 .Where(p => p.HasTag<RandoPlacementTag>());

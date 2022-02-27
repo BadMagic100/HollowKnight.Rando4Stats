@@ -1,9 +1,13 @@
-﻿using RandoStats.Settings;
+﻿using ConnectionMetadataInjector;
+using ConnectionMetadataInjector.Util;
+using ItemChanger;
+using ItemChanger.Items;
+using RandoStats.Settings;
 using RandoStats.Stats;
-using RandoStats.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CMI = ConnectionMetadataInjector.ConnectionMetadataInjector;
 
 namespace RandoStats.GUI
 {
@@ -25,10 +29,23 @@ namespace RandoStats.GUI
             StandardSubcategories.ByPoolGroup
         };
 
+        private static IEnumerable<string> ConnectionProvidedGroups()
+        {
+            IEnumerable<AbstractItem> validItems = StatsEngine.GetEligiblePlacements()
+                .SelectMany(plt => plt.Items)
+                .Where(i => !(i.RandoLocation()?.Name == "Start" && i is SpawnGeoItem));
+            return CMI.GetConnectionProvidedValues(validItems, SupplementalMetadata.Of, CMI.ItemPoolGroup);
+        }
+
+        private static IEnumerable<string> BuiltInGroups() => Enum.GetValues(typeof(PoolGroup))
+            .OfType<PoolGroup>()
+            .Where(g => g != PoolGroup.Other)
+            .Select(g => g.FriendlyName());
+
         protected override Dictionary<string, IReadOnlyCollection<RandomizerStatistic>> SubcategoryStatistics { get; init; } = new()
         {
-            [StandardSubcategories.ByPoolGroup] = Enum.GetValues(typeof(PoolGroup))
-                .OfType<PoolGroup>().Select(g => g.FriendlyName())
+            [StandardSubcategories.ByPoolGroup] = BuiltInGroups()
+                .Concat(ConnectionProvidedGroups().Except(BuiltInGroups()))
                 .Append("Other")
                 .Select(g => new ItemsObtainedByPoolGroup(g)).ToList()
         };
