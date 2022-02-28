@@ -99,7 +99,7 @@ namespace RandoStats.GUI.StatLayouts
         {
             StackLayout layout = new(onLayout, GetType().Name)
             {
-                Spacing = StatLayoutHelper.VERTICAL_SPACING,
+                Spacing = StatLayoutHelper.VERTICAL_SPACING_SUBGROUPS,
                 HorizontalAlignment = HorizontalAlignment.Center
             };
             layout.Children.Add(new TextObject(onLayout)
@@ -110,11 +110,20 @@ namespace RandoStats.GUI.StatLayouts
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center
             });
+
+            Layout rootGroupLayout = new DynamicUniformGrid(onLayout, $"{GetType().Name}_Root_Stats")
+            {
+                HorizontalSpacing = StatLayoutHelper.HORIZONTAL_SPACING,
+                VerticalSpacing = StatLayoutHelper.VERTICAL_SPACING_PANEL,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                ChildrenBeforeRollover = subcategoryColumns
+            };
+            layout.Children.Add(rootGroupLayout);
             foreach (RandomizerStatistic stat in RootStatistics)
             {
                 if (stat.IsEnabled)
                 {
-                    layout.Children.Add(new LabeledStatTextFactory(stat).Build(onLayout));
+                    rootGroupLayout.Children.Add(new LabeledStatTextFactory(stat).Build(onLayout));
                 }
             }
 
@@ -126,7 +135,7 @@ namespace RandoStats.GUI.StatLayouts
                     Layout subcategoryGroupLayout = new DynamicUniformGrid(onLayout, $"{GetType().Name}_{subcategory}")
                     {
                         HorizontalSpacing = StatLayoutHelper.HORIZONTAL_SPACING,
-                        VerticalSpacing = StatLayoutHelper.VERTICAL_SPACING,
+                        VerticalSpacing = StatLayoutHelper.VERTICAL_SPACING_PANEL,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         ChildrenBeforeRollover = subcategoryColumns
                     };

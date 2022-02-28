@@ -14,7 +14,9 @@ namespace RandoStats.GUI
         internal const float HORIZONTAL_PADDING = 5;
         internal const float VERTICAL_PADDING = 10;
 
-        internal const float VERTICAL_SPACING = 8;
+        internal const float VERTICAL_SPACING_PANEL = 8;
+        internal const float VERTICAL_SPACING_SUBGROUPS = 12;
+        internal const float VERTICAL_SPACING_STATS = 15;
         internal const float HORIZONTAL_SPACING = 10;
 
         internal const int FONT_SIZE_H1 = 25;
@@ -50,7 +52,7 @@ namespace RandoStats.GUI
                 };
                 return new StackLayout(onLayout)
                 {
-                    Spacing = VERTICAL_SPACING * 1.5f,
+                    Spacing = VERTICAL_SPACING_STATS,
                     HorizontalAlignment = desiredHorizontal,
                     VerticalAlignment = desiredVertical,
                     Padding = new Padding(HORIZONTAL_PADDING, VERTICAL_PADDING)
