@@ -28,7 +28,6 @@ namespace RandoStats.GUI
         /// </summary>
         /// <param name="onLayout">The root layout to draw the stats on</param>
         /// <param name="pos">The stat position</param>
-        /// <returns></returns>
         internal static Layout? GetLayoutForPosition(LayoutRoot onLayout, StatPosition pos)
         {
             if (pos == StatPosition.None)
@@ -66,7 +65,7 @@ namespace RandoStats.GUI
         /// <param name="position">The position to check</param>
         internal static int GetDynamicGridColumnsForPosition(StatPosition position) => position switch
         {
-            StatPosition.TopCenter => 6,
+            StatPosition.TopCenter => 5,
             _ => 2
         };
 

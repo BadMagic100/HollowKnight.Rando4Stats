@@ -18,7 +18,7 @@ namespace RandoStats.Settings
 
     public class StatLayoutSettings
     {
-        private Dictionary<string, bool> enabledSubcategories = new();
+        private readonly Dictionary<string, bool> enabledSubcategories = new();
         public Dictionary<string, bool> EnabledSubcategories
         {
             get => enabledSubcategories;

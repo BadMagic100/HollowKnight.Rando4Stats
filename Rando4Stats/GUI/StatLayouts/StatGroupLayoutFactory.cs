@@ -4,6 +4,7 @@ using RandoStats.Settings;
 using RandoStats.Stats;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RandoStats.GUI.StatLayouts
 {
@@ -16,11 +17,6 @@ namespace RandoStats.GUI.StatLayouts
         /// The settings to use to configure the layout
         /// </summary>
         public StatLayoutSettings Settings { get; init; }
-
-        /// <summary>
-        /// Whether the stat is eligible to display given the current randomizer settings
-        /// </summary>
-        public abstract bool CanDisplay { get; }
 
         /// <summary>
         /// The top-level section header for the stat group, such as "Items Obtained"
@@ -42,6 +38,11 @@ namespace RandoStats.GUI.StatLayouts
         /// <see cref="SubcategoryStatistics"/>.
         /// </summary>
         protected abstract IReadOnlyCollection<string> AllowedSubcategories { get; init; }
+
+        /// <summary>
+        /// Whether the stat is eligible to display given the current randomizer settings
+        /// </summary>
+        public bool CanDisplay => RootStatistics.All(x => x.IsComputable);
 
         /// <summary>
         /// Constructs a layout factory. Note that to work with <see cref="StatLayoutHelper.GetLayoutBuilderFromSettings(StatLayoutSettings)"/>,
@@ -73,7 +74,10 @@ namespace RandoStats.GUI.StatLayouts
         {
             foreach (RandomizerStatistic stat in RootStatistics)
             {
-                StatsEngine.Hook(stat, transient);
+                if (stat.IsComputable)
+                {
+                    StatsEngine.Hook(stat, transient);
+                }
             }
             // slight optimization - this iterates through the subcategory dictionary, so we'll only get it once
             HashSet<string> enabledSubcategories = Settings.EnabledSubcategoryNames;
@@ -83,7 +87,10 @@ namespace RandoStats.GUI.StatLayouts
                 {
                     foreach (RandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))
                     {
-                        StatsEngine.Hook(stat, transient);
+                        if (stat.IsComputable)
+                        {
+                            StatsEngine.Hook(stat, transient);
+                        }
                     }
                 }
             }
@@ -121,7 +128,7 @@ namespace RandoStats.GUI.StatLayouts
             layout.Children.Add(rootGroupLayout);
             foreach (RandomizerStatistic stat in RootStatistics)
             {
-                if (stat.IsEnabled)
+                if (stat.IsComputable && stat.IsEnabled)
                 {
                     rootGroupLayout.Children.Add(new LabeledStatTextFactory(stat).Build(onLayout));
                 }
@@ -141,7 +148,7 @@ namespace RandoStats.GUI.StatLayouts
                     };
                     foreach (RandomizerStatistic stat in GetStatisticsForSubcategory(subcategory))
                     {
-                        if (stat.IsEnabled)
+                        if (stat.IsComputable && stat.IsEnabled)
                         {
                             subcategoryGroupLayout.Children.Add(new LabeledStatTextFactory(stat).Build(onLayout));
                         }

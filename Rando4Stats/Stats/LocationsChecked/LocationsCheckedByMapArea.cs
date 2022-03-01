@@ -15,9 +15,11 @@ namespace RandoStats.Stats.LocationsChecked
 
         protected override string StatNamespace => base.StatNamespace + ":" + areaShortName;
 
+        public override bool IsComputable => true;
+
         public override bool IsEnabled => TotalSum > 0;
 
-        public LocationsCheckedByMapArea(string area) : base(area)
+        public LocationsCheckedByMapArea(string area) : base(area == MapArea.FORGOTTEN_CROSSROADS ? "Crossroads" : area)
         {
             areaName = area;
             areaShortName = area.Replace(" ", "");

@@ -19,6 +19,8 @@ namespace RandoStats.Stats.ItemsObtained
 
         protected override string StatNamespace => base.StatNamespace + ":" + groupShortName;
 
+        public override bool IsComputable => true;
+
         public override bool IsEnabled => TotalSum > 0;
 
         public ItemsObtainedByPoolGroup(string groupFriendlyName) : base(groupFriendlyName)

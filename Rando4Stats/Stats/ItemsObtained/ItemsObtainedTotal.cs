@@ -10,6 +10,8 @@ namespace RandoStats.Stats.ItemsObtained
     {
         public ItemsObtainedTotal(string label) : base(label) { }
 
+        public override bool IsComputable => true;
+
         public override bool IsEnabled => true;
 
         public override void HandlePlacement(AbstractPlacement placement)

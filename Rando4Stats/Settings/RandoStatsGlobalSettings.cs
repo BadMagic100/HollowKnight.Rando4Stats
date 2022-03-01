@@ -22,6 +22,13 @@ namespace RandoStats.Settings
             set => MergeSettings(value, ref locationsCheckedSettingsStore);
         }
 
+        private StatLayoutSettings transitionsVistitedSettingsStore = new(new HashSet<string>() { StandardSubcategories.ByMapArea }, StatPosition.TopCenter, 0);
+        public StatLayoutSettings TransitionsVisitedLayoutSettings
+        {
+            get => transitionsVistitedSettingsStore;
+            set => MergeSettings(value, ref transitionsVistitedSettingsStore);
+        }
+
         private void MergeSettings(StatLayoutSettings input, ref StatLayoutSettings target)
         {
             target.Position = input.Position;

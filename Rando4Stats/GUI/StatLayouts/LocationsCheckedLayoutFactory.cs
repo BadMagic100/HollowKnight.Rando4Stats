@@ -15,8 +15,6 @@ namespace RandoStats.GUI.StatLayouts
     {
         public LocationsCheckedLayoutFactory(StatLayoutSettings settings) : base(settings) { }
 
-        public override bool CanDisplay => true;
-
         public override string GroupName => "Locations Checked";
 
         protected override IReadOnlyCollection<RandomizerStatistic> RootStatistics { get; init; } = new RandomizerStatistic[]

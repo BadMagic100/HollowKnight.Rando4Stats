@@ -1,6 +1,7 @@
 ﻿using ItemChanger;
 using ItemChanger.Internal;
 using RandomizerMod.IC;
+using RandomizerMod.RC;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,8 +9,8 @@ namespace RandoStats.Stats
 {
     public static class StatsEngine
     {
-        private static HashSet<RandomizerStatistic> transientStats = new();
-        private static HashSet<RandomizerStatistic> longLivedStats = new();
+        private static readonly HashSet<RandomizerStatistic> transientStats = new();
+        private static readonly HashSet<RandomizerStatistic> longLivedStats = new();
 
         public static void Initialize()
         {
@@ -48,8 +49,11 @@ namespace RandoStats.Stats
         {
             foreach (RandomizerStatistic stat in longLivedStats)
             {
+                if (!stat.IsComputable)
+                    continue;
                 stat.BeginCompute();
                 RandoItemTag.AfterRandoItemGive += stat.OnLongLivedItemObtained;
+                TrackerUpdate.OnTransitionVisited += stat.HandleTransition;
             }
         }
 
@@ -60,7 +64,10 @@ namespace RandoStats.Stats
         {
             foreach (RandomizerStatistic stat in longLivedStats)
             {
+                if (!stat.IsComputable)
+                    continue;
                 RandoItemTag.AfterRandoItemGive -= stat.OnLongLivedItemObtained;
+                TrackerUpdate.OnTransitionVisited -= stat.HandleTransition;
                 stat.FinalizeCompute();
             }
         }
@@ -72,10 +79,17 @@ namespace RandoStats.Stats
         {
             foreach (RandomizerStatistic stat in transientStats)
             {
+                if (!stat.IsComputable)
+                    continue;
+
                 stat.BeginCompute();
                 foreach (AbstractPlacement placement in GetEligiblePlacements())
                 {
                     stat.HandlePlacement(placement);
+                }
+                foreach (TransitionPlacement transition in RandomizerMod.RandomizerMod.RS.Context.transitionPlacements ?? Enumerable.Empty<TransitionPlacement>())
+                {
+                    stat.HandleTransition(transition.Source.Name, transition.Target.Name);
                 }
                 stat.FinalizeCompute();
             }
@@ -85,7 +99,10 @@ namespace RandoStats.Stats
         {
             foreach (RandomizerStatistic stat in transientStats.Concat(longLivedStats))
             {
-                if (stat.IsEnabled) stat.RegisterFormatterStats();
+                if (stat.IsComputable && stat.IsEnabled)
+                {
+                    stat.RegisterFormatterStats();
+                }
             }
         }
     }

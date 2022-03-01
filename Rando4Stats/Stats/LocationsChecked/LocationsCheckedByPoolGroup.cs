@@ -17,6 +17,8 @@ namespace RandoStats.Stats.LocationsChecked
 
         protected override string StatNamespace => base.StatNamespace + ":" + groupShortName;
 
+        public override bool IsComputable => true;
+
         public override bool IsEnabled => TotalSum > 0;
 
         public LocationsCheckedByPoolGroup(string groupFriendlyName) : base(groupFriendlyName)

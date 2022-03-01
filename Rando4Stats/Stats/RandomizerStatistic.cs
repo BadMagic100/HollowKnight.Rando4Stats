@@ -16,6 +16,10 @@ namespace RandoStats.Stats
         /// </summary>
         public abstract string GetContent();
         /// <summary>
+        /// Whether the statistic is able to be computed based on the current randomizer settings
+        /// </summary>
+        public abstract bool IsComputable { get; }
+        /// <summary>
         /// Whether the statistic is eligible to be enabled based on the current randomizer settings
         /// </summary>
         public abstract bool IsEnabled { get; }
@@ -28,8 +32,15 @@ namespace RandoStats.Stats
         /// <summary>
         /// Called by the stat engine for each rando placement. Use this to adjust computation state for your stats.
         /// </summary>
-        /// <param name="placement"></param>
-        public abstract void HandlePlacement(AbstractPlacement placement);
+        /// <param name="placement">The placement to process</param>
+        public virtual void HandlePlacement(AbstractPlacement placement) { }
+
+        /// <summary>
+        /// Called by the stat engine for each transition placement. Use this to adjust computation state for your stats.
+        /// </summary>
+        /// <param name="from">The source transition name</param>
+        /// <param name="to">The targe transition name</param>
+        public virtual void HandleTransition(string from, string to) { }
 
         /// <summary>
         /// Called by the stat engine when stat computation should end. Use this to finalize/cleanup/save any needed state.

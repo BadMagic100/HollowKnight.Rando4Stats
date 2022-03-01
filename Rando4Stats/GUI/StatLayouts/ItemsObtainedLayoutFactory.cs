@@ -16,8 +16,6 @@ namespace RandoStats.GUI.StatLayouts
     {
         public ItemsObtainedLayoutFactory(StatLayoutSettings settings) : base(settings) { }
 
-        public override bool CanDisplay => true;
-
         public override string GroupName => "Items Obtained";
 
         protected override IReadOnlyCollection<RandomizerStatistic> RootStatistics { get; init; } = new RandomizerStatistic[]

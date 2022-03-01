@@ -8,6 +8,8 @@ namespace RandoStats.Stats.LocationsChecked
     {
         public LocationsCheckedTotal(string label) : base(label) { }
 
+        public override bool IsComputable => true;
+
         public override bool IsEnabled => true;
 
         public override void HandlePlacement(AbstractPlacement placement)
