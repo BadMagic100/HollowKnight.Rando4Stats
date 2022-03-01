@@ -4,6 +4,7 @@ using RandoStats.GUI.StatLayouts;
 using RandoStats.Interop;
 using RandoStats.Settings;
 using RandoStats.Stats;
+using System;
 using System.Collections;
 using Rando = RandomizerMod.RandomizerMod;
 
@@ -37,34 +38,55 @@ namespace RandoStats
 
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)
         {
-            PauseUI.BuildLayout();
-            StatsEngine.Initialize();
-            StatLayoutHelper.ConstructLayoutFactories(GlobalSettings);
-            foreach (StatGroupLayoutFactory factory in StatLayoutHelper.LayoutFactories)
+            try
             {
-                factory.HookStatsEngine();
+                PauseUI.BuildLayout();
+                StatsEngine.Initialize();
+                StatLayoutHelper.ConstructLayoutFactories(GlobalSettings);
+                foreach (StatGroupLayoutFactory factory in StatLayoutHelper.LayoutFactories)
+                {
+                    factory.HookStatsEngine();
+                }
+                StatsEngine.BeginComputeLongLived();
             }
-            StatsEngine.BeginComputeLongLived();
+            catch (Exception ex)
+            {
+                LogError($"Unknown issue hooking RandoStats - {ex}");
+            }
             orig(self);
         }
 
         private IEnumerator OnSaveClosed(On.QuitToMenu.orig_Start orig, QuitToMenu self)
         {
-            PauseUI.DestroyLayout();
-            BenchwarpInterop.UnhideSceneName();
+            try
+            {
+                PauseUI.DestroyLayout();
+                BenchwarpInterop.UnhideSceneName();
 
-            StatsEngine.FinalizeComputeLongLived();
+                StatsEngine.FinalizeComputeLongLived();
+            }
+            catch (Exception ex)
+            {
+                LogError($"Unknown issue unhooking RandoStats - {ex}");
+            }
             return orig(self);
         }
 
         private void OnCompletionStart(On.GameCompletionScreen.orig_Start orig, GameCompletionScreen self)
         {
-            PauseUI.DestroyLayout();
-            RecentItemsInterop.ToggleDisplay(false);
-            BenchwarpInterop.TempHideSceneName();
+            try
+            {
+                PauseUI.DestroyLayout();
+                RecentItemsInterop.ToggleDisplay(false);
+                BenchwarpInterop.TempHideSceneName();
 
-            StatsEngine.ComputeTransient();
-            CompletionUI.BuildLayout();
+                StatsEngine.ComputeTransient();
+                CompletionUI.BuildLayout();
+            }
+            catch (Exception ex)
+            {
+                LogError($"Unknown error computing/displaying stats - {ex}");
+            }
             orig(self);
         }
 
