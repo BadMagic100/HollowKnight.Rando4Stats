@@ -38,7 +38,7 @@ If you have any feature requests, feel free to ask in #rando-general in the HKSC
 
 # Installation
 
-Use Scarab. If for some reason you can't use Scarab, links to the required dependencies are listed in [ModDependencies.txt](ModDependencies.txt).
+Use Scarab. If for some reason you can't use Scarab, links to the required dependencies are listed in [ModDependencies.txt](Rando4Stats/ModDependencies.txt).
 
 # Acknowledgements
 
