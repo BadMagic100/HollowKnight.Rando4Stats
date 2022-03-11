@@ -2,6 +2,7 @@
 using MagicUI.Elements;
 using MagicUI.Graphics;
 using Modding;
+using RandomizerMod;
 using RandoStats.GUI.StatLayouts;
 using RandoStats.Settings;
 using RandoStats.Stats;
@@ -34,7 +35,7 @@ namespace RandoStats.GUI
             GUIUtility.systemCopyBuffer = StatFormatRegistry.Format(RandoStats.Instance!.GlobalSettings.StatFormatString);
             if (clipboardPrompt != null)
             {
-                clipboardPrompt.Text = "Copied!";
+                clipboardPrompt.Text = Localization.Localize("Copied!");
             }
         }
 
@@ -83,7 +84,7 @@ namespace RandoStats.GUI
 
                 new TextObject(cutsceneLayout, "Clipboard Prompt")
                 {
-                    Text = "Press Ctrl+C to copy completion",
+                    Text = Localization.Localize("Press Ctrl+C to copy completion"),
                     FontSize = 18,
                     Padding = new Padding(35, 0, 0, 125),
                     HorizontalAlignment = HorizontalAlignment.Center,

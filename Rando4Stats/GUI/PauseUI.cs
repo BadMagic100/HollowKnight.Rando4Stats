@@ -1,5 +1,6 @@
 ﻿using MagicUI.Core;
 using MagicUI.Elements;
+using RandomizerMod;
 using RandoStats.Util;
 using UnityEngine;
 using Rando = RandomizerMod.RandomizerMod;
@@ -26,7 +27,7 @@ namespace RandoStats.GUI
 
                 Button warpButton = new(persistentLayout, "Warp Button")
                 {
-                    Content = "View Stats",
+                    Content = Localization.Localize("View Stats"),
                     HorizontalAlignment = HorizontalAlignment.Right,
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Font = UI.TrajanBold,
