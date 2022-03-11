@@ -2,4 +2,5 @@
 Randomizer 4 from https://github.com/homothetyhk/RandomizerMod/releases/download/v4.0.3%2B056/RandomizerMod.zip
 RandomizerCore from https://github.com/homothetyhk/RandomizerCore/releases/download/v1.0.3/RandomizerCore.zip
 ItemChanger from https://github.com/homothetyhk/HollowKnight.ItemChanger/releases/download/v2.0.3%2B470/ItemChanger.zip
+MenuChanger from https://github.com/homothetyhk/HollowKnight.MenuChanger/releases/download/v1.0.2%2B277/MenuChanger.zip
 ConnectionMetadataInjector from https://github.com/BadMagic100/ConnectionMetadataInjector/releases/download/v1.0.8093.12933/ConnectionMetadataInjector.zip
