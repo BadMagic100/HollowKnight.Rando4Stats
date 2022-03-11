@@ -24,6 +24,8 @@ namespace RandoStats.Stats
         /// </summary>
         public abstract bool IsEnabled { get; }
 
+        public virtual string StatNamespace { get => GetType().Name; }
+
         /// <summary>
         /// Called by the stat engine when stat computation should begin. Use this to reset/restore any needed state.
         /// </summary>

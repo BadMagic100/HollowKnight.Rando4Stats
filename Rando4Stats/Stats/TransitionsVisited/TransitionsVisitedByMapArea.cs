@@ -17,7 +17,7 @@ namespace RandoStats.Stats.TransitionsVisited
         private readonly string areaShortName;
         private Dictionary<string, RandoModTransition> transitionLookup = new();
 
-        protected override string StatNamespace => base.StatNamespace + ":" + areaShortName;
+        public override string StatNamespace => base.StatNamespace + "." + areaShortName;
 
         public override bool IsComputable => Rando.RS.GenerationSettings.TransitionSettings.Mode != TransitionSettings.TransitionMode.None;
 

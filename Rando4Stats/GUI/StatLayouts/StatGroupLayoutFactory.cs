@@ -1,5 +1,6 @@
 ﻿using MagicUI.Core;
 using MagicUI.Elements;
+using RandomizerMod;
 using RandoStats.Settings;
 using RandoStats.Stats;
 using System;
@@ -111,7 +112,7 @@ namespace RandoStats.GUI.StatLayouts
             };
             layout.Children.Add(new TextObject(onLayout)
             {
-                Text = GroupName,
+                Text = Localization.Localize(GroupName),
                 Font = UI.TrajanBold,
                 FontSize = StatLayoutHelper.FONT_SIZE_H1,
                 VerticalAlignment = VerticalAlignment.Center,

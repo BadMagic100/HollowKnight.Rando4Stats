@@ -1,5 +1,6 @@
 ﻿using MagicUI.Core;
 using MagicUI.Elements;
+using RandomizerMod;
 using RandoStats.Stats;
 
 namespace RandoStats.GUI
@@ -15,6 +16,7 @@ namespace RandoStats.GUI
 
         public ArrangableElement Build(LayoutRoot onLayout)
         {
+            string ns = stat.StatNamespace;
             string header = stat.GetLabel();
             string text = stat.GetContent();
             Layout statStack = new StackLayout(onLayout)
@@ -22,14 +24,14 @@ namespace RandoStats.GUI
                 Spacing = 5,
                 HorizontalAlignment = HorizontalAlignment.Center
             };
-            statStack.Children.Add(new TextObject(onLayout, "Stat_" + header)
+            statStack.Children.Add(new TextObject(onLayout, $"StatHeader_{ns}_{header}")
             {
                 Font = UI.TrajanBold,
                 FontSize = StatLayoutHelper.FONT_SIZE_H2,
-                Text = header,
+                Text = Localization.Localize(header),
                 HorizontalAlignment = HorizontalAlignment.Center
             });
-            statStack.Children.Add(new TextObject(onLayout, "StatValue_" + header)
+            statStack.Children.Add(new TextObject(onLayout, $"StatValue_{ns}_{header}")
             {
                 Font = UI.TrajanNormal,
                 FontSize = StatLayoutHelper.FONT_SIZE_H3,

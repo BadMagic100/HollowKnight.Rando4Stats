@@ -9,8 +9,6 @@ namespace RandoStats.Stats
         protected int ObtainedSum { get; set; } = 0;
         protected int TotalSum { get; set; } = 0;
 
-        protected virtual string StatNamespace { get => GetType().Name; }
-
         public PercentageStatistic(string label)
         {
             Label = label;
@@ -51,11 +49,11 @@ namespace RandoStats.Stats
         {
             (int obtained, int total, int percent, string content) = ComposeStats();
 
-            StatFormatRegistry.SetStat($"{StatNamespace}:{StatFormatRegistry.STAT_FULL}", content);
-            StatFormatRegistry.SetStat($"{StatNamespace}:{StatFormatRegistry.STAT_PERCENT}", $"{percent}%");
-            StatFormatRegistry.SetStat($"{StatNamespace}:{StatFormatRegistry.STAT_OBTAINED}", obtained.ToString());
-            StatFormatRegistry.SetStat($"{StatNamespace}:{StatFormatRegistry.STAT_TOTAL}", total.ToString());
-            StatFormatRegistry.SetStat($"{StatNamespace}:{StatFormatRegistry.STAT_FRACTION}", $"{obtained}/{total}");
+            StatFormatRegistry.SetStat(StatNamespace, StatFormatRegistry.STAT_FULL, content);
+            StatFormatRegistry.SetStat(StatNamespace, StatFormatRegistry.STAT_PERCENT, $"{percent}%");
+            StatFormatRegistry.SetStat(StatNamespace, StatFormatRegistry.STAT_OBTAINED, obtained.ToString());
+            StatFormatRegistry.SetStat(StatNamespace, StatFormatRegistry.STAT_TOTAL, total.ToString());
+            StatFormatRegistry.SetStat(StatNamespace, StatFormatRegistry.STAT_FRACTION, $"{obtained}/{total}");
         }
     }
 }

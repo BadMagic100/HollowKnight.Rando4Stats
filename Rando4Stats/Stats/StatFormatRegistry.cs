@@ -30,7 +30,9 @@ namespace RandoStats.Stats
         };
 
         private static readonly Regex aliasFinder = new(@"\$([A-Z_]+)\$");
-        private static readonly Regex placeholderFinder = new(@"{([A-Za-z:\.]+)}");
+        private static readonly Regex placeholderFinder = new(@"{([A-Za-z\.]+):([A-Za-z]+)}");
+
+        private static string KeyOf(string ns, string stat) => $"{ns}:{stat}";
 
         public static void GenerateBasicStats()
         {
@@ -38,26 +40,28 @@ namespace RandoStats.Stats
             string timeStr = time.HasHours ? $"{(int)time.Hours:0}:{(int)time.Minutes:00}"
                 : time.HasMinutes ? $"{(int)time.Minutes:0}:{(int)time.Seconds:00}"
                 : $"{(int)time.Seconds:0}s";
-            SetStat($"{NS_BUILT_IN}:{STAT_TIME}", timeStr);
-            SetStat($"{NS_BUILT_IN}:{STAT_PERCENT}", $"{(int)PlayerData.instance.completionPercentage}%");
+            SetStat(NS_BUILT_IN, STAT_TIME, timeStr);
+            SetStat(NS_BUILT_IN, STAT_PERCENT, $"{(int)PlayerData.instance.completionPercentage}%");
         }
 
-        public static void SetStat(string key, string value)
+        public static void SetStat(string ns, string stat, string value)
         {
+            string key = KeyOf(ns, stat);
             statRegistry[key] = value;
         }
 
-        private static string TryGetAlias(string key)
+        private static string TryGetAlias(string name)
         {
-            if (aliases.ContainsKey(key))
+            if (aliases.ContainsKey(name))
             {
-                return aliases[key];
+                return aliases[name];
             }
-            return $"(No alias ${key}$)";
+            return $"(No alias ${name}$)";
         }
 
-        private static string TryGetStat(string key)
+        private static string TryGetStat(string ns, string stat)
         {
+            string key = KeyOf(ns, stat);
             if (statRegistry.ContainsKey(key))
             {
                 return statRegistry[key];
@@ -72,9 +76,10 @@ namespace RandoStats.Stats
             {
                 fstring = fstring.Replace($"${alias}$", TryGetAlias(alias));
             }
-            foreach (string placeholder in placeholderFinder.Matches(fstring).Cast<Match>().Select(x => x.Groups[1].Value).Distinct())
+            foreach ((string ns, string stat) in placeholderFinder.Matches(fstring).Cast<Match>().Select(x => (x.Groups[1].Value, x.Groups[2].Value)).Distinct())
             {
-                fstring = fstring.Replace($"{{{placeholder}}}", TryGetStat(placeholder));
+
+                fstring = fstring.Replace($"{{{KeyOf(ns, stat)}}}", TryGetStat(ns, stat));
             }
             return fstring;
         }

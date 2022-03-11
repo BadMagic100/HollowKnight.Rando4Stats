@@ -13,7 +13,7 @@ namespace RandoStats.Stats.LocationsChecked
         private readonly string areaName;
         private readonly string areaShortName;
 
-        protected override string StatNamespace => base.StatNamespace + ":" + areaShortName;
+        public override string StatNamespace => base.StatNamespace + "." + areaShortName;
 
         public override bool IsComputable => true;
 

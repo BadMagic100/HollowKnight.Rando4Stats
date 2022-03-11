@@ -17,7 +17,7 @@ namespace RandoStats.Stats.ItemsObtained
         private readonly string groupFriendlyName;
         private readonly string groupShortName;
 
-        protected override string StatNamespace => base.StatNamespace + ":" + groupShortName;
+        public override string StatNamespace => base.StatNamespace + "." + groupShortName;
 
         public override bool IsComputable => true;
 
