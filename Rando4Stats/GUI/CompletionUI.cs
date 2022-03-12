@@ -53,7 +53,7 @@ namespace RandoStats.GUI
                 holdToSkipLock = false;
                 pressStartTime = 0;
 
-                cutsceneLayout = new LayoutRoot(false, false, "Completion Layout");
+                cutsceneLayout = new LayoutRoot(false, "Completion Layout");
                 cutsceneLayout.ListenForHotkey(KeyCode.C, CopyStats, ModifierKeys.Ctrl);
 
                 IEnumerable<IGrouping<StatPosition, StatGroupLayoutFactory>> factoriesByPosition = StatLayoutHelper.LayoutFactories

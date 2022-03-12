@@ -16,7 +16,8 @@ namespace RandoStats.GUI
             // only enable on rando saves, and if we haven't set up the layout yet as a safeguard
             if (Rando.RS.Context != null && persistentLayout == null)
             {
-                persistentLayout = new LayoutRoot(true, true, "SkipToCompletionLayout");
+                persistentLayout = new LayoutRoot(true, "SkipToCompletionLayout");
+                persistentLayout.VisibilityCondition = GameManager.instance.IsGamePaused;
 
                 persistentLayout.ListenForHotkey(KeyCode.C, () =>
                 {
