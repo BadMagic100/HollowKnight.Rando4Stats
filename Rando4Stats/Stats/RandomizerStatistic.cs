@@ -24,6 +24,11 @@ namespace RandoStats.Stats
         /// </summary>
         public abstract bool IsEnabled { get; }
 
+        /// <summary>
+        /// Whether the stat must be computed in a long-lived context. Default is false; transient stats are preferred.
+        /// </summary>
+        public virtual bool IsLongLived { get; } = false;
+
         public virtual string StatNamespace { get => GetType().Name; }
 
         /// <summary>

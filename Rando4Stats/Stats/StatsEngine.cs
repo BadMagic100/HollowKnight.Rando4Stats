@@ -23,16 +23,15 @@ namespace RandoStats.Stats
         /// This is the recommended pattern if at all possible, as it allows the stats mod to be installed mid-seed.
         /// </summary>
         /// <param name="stat">The stat to hook into the engine</param>
-        /// <param name="transient">Whether the stat should be transient or long-lived. Default is true; this is recommended.</param>
-        public static void Hook(RandomizerStatistic stat, bool transient)
+        public static void Hook(RandomizerStatistic stat)
         {
-            if (transient)
+            if (stat.IsLongLived)
             {
-                transientStats.Add(stat);
+                longLivedStats.Add(stat);
             }
             else
             {
-                longLivedStats.Add(stat);
+                transientStats.Add(stat);
             }
         }
 

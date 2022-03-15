@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RandoStats.GUI.StatLayouts
+namespace RandoStats.GUI
 {
     /// <summary>
     /// Base class to build configurable layouts for collections of stats
@@ -71,13 +71,13 @@ namespace RandoStats.GUI.StatLayouts
             }
         }
 
-        public void HookStatsEngine(bool transient = true)
+        public void HookStatsEngine()
         {
             foreach (RandomizerStatistic stat in RootStatistics)
             {
                 if (stat.IsComputable)
                 {
-                    StatsEngine.Hook(stat, transient);
+                    StatsEngine.Hook(stat);
                 }
             }
             // slight optimization - this iterates through the subcategory dictionary, so we'll only get it once
@@ -90,7 +90,7 @@ namespace RandoStats.GUI.StatLayouts
                     {
                         if (stat.IsComputable)
                         {
-                            StatsEngine.Hook(stat, transient);
+                            StatsEngine.Hook(stat);
                         }
                     }
                 }
