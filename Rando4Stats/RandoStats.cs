@@ -1,6 +1,5 @@
 ﻿using Modding;
 using RandoStats.GUI;
-using RandoStats.GUI.StatLayouts;
 using RandoStats.Interop;
 using RandoStats.Settings;
 using RandoStats.Stats;
@@ -18,6 +17,9 @@ namespace RandoStats
         public override string GetVersion() => GetType().Assembly.GetName().Version.ToString();
 
         public RandoStatsGlobalSettings GlobalSettings { get; private set; } = new();
+
+        // right now this is just checking rando enablement, but I think the naming makes sense as other conditions may apply at a future time
+        private bool IsEnabled => Rando.RS.Context != null;
 
         public RandoStats() : base()
         {
@@ -38,54 +40,62 @@ namespace RandoStats
 
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)
         {
-            try
+            if (IsEnabled)
             {
-                PauseUI.BuildLayout();
-                StatsEngine.Initialize();
-                StatLayoutHelper.ConstructLayoutFactories(GlobalSettings);
-                foreach (StatGroupLayoutFactory factory in StatLayoutHelper.LayoutFactories)
+                try
                 {
-                    factory.HookStatsEngine();
+                    PauseUI.BuildLayout();
+                    StatsEngine.Initialize();
+                    StatLayoutHelper.ConstructLayoutFactories(GlobalSettings);
+                    foreach (StatGroupLayoutFactory factory in StatLayoutHelper.LayoutFactories)
+                    {
+                        factory.HookStatsEngine();
+                    }
+                    StatsEngine.BeginComputeLongLived();
                 }
-                StatsEngine.BeginComputeLongLived();
-            }
-            catch (Exception ex)
-            {
-                LogError($"Unknown issue hooking RandoStats - {ex}");
+                catch (Exception ex)
+                {
+                    LogError($"Unknown issue hooking RandoStats - {ex}");
+                }
             }
             orig(self);
         }
 
         private IEnumerator OnSaveClosed(On.QuitToMenu.orig_Start orig, QuitToMenu self)
         {
-            try
+            if (IsEnabled)
             {
-                PauseUI.DestroyLayout();
-                BenchwarpInterop.UnhideSceneName();
+                try
+                {
+                    PauseUI.DestroyLayout();
+                    BenchwarpInterop.UnhideSceneName();
 
-                StatsEngine.FinalizeComputeLongLived();
-            }
-            catch (Exception ex)
-            {
-                LogError($"Unknown issue unhooking RandoStats - {ex}");
+                    StatsEngine.FinalizeComputeLongLived();
+                }
+                catch (Exception ex)
+                {
+                    LogError($"Unknown issue unhooking RandoStats - {ex}");
+                }
             }
             return orig(self);
         }
 
         private void OnCompletionStart(On.GameCompletionScreen.orig_Start orig, GameCompletionScreen self)
         {
-            try
+            if (IsEnabled)
             {
-                PauseUI.DestroyLayout();
-                RecentItemsInterop.ToggleDisplay(false);
-                BenchwarpInterop.TempHideSceneName();
-
-                StatsEngine.ComputeTransient();
-                CompletionUI.BuildLayout();
-            }
-            catch (Exception ex)
-            {
-                LogError($"Unknown error computing/displaying stats - {ex}");
+                try
+                {
+                    PauseUI.DestroyLayout();
+                    RecentItemsInterop.ToggleDisplay(false);
+                    BenchwarpInterop.TempHideSceneName();
+                    StatsEngine.ComputeTransient();
+                    CompletionUI.BuildLayout();
+                }
+                catch (Exception ex)
+                {
+                    LogError($"Unknown error computing/displaying stats - {ex}");
+                }
             }
             orig(self);
         }
@@ -93,7 +103,7 @@ namespace RandoStats
         private void HandleCutsceneInput(On.InputHandler.orig_CutsceneInput orig, InputHandler self)
         {
             string scene = GameManager.instance.GetSceneNameString();
-            if (scene != END_GAME_COMPLETION || Rando.RS.Context == null || !CompletionUI.HandleInput())
+            if (scene != END_GAME_COMPLETION || !IsEnabled || !CompletionUI.HandleInput())
             {
                 // do the default if one of the following is true:
                 // * We're in a different cutscene than the completion screen
