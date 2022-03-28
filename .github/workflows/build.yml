@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
       - name: Checkout
@@ -29,9 +29,16 @@ jobs:
             mkdir API\Mods
             Get-Content Rando4Stats\ModDependencies.txt | ForEach-Object {
                 $folder,$uri = ($_ -split ' from ')[0,1]
-                Invoke-WebRequest -Uri $uri -OutFile tmp.zip
-                Expand-Archive -Path tmp.zip -DestinationPath "API\Mods\$folder"
-                Remove-Item tmp.zip
+                if ($uri -match '.dll$') {
+                    $file = ($uri -split '/')[-1]
+                    $dir = "API\Mods\$folder"
+                    mkdir $dir
+                    Invoke-WebRequest -Uri $uri -OutFile "$dir\$file"
+                } else {
+                    Invoke-WebRequest -Uri $uri -OutFile tmp.zip
+                    Expand-Archive -Path tmp.zip -DestinationPath "API\Mods\$folder"
+                    Remove-Item tmp.zip
+                }
             }
 
       - name: Setup .NET
