@@ -23,23 +23,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup MAPI
-        run: |
-            Invoke-WebRequest -Uri "https://files.catbox.moe/u29359.zip" -OutFile API.zip
-            Expand-Archive -Path API.zip -DestinationPath API
-            mkdir API\Mods
-            Get-Content Rando4Stats\ModDependencies.txt | ForEach-Object {
-                $folder,$uri = ($_ -split ' from ')[0,1]
-                if ($uri -match '.dll$') {
-                    $file = ($uri -split '/')[-1]
-                    $dir = "API\Mods\$folder"
-                    mkdir $dir
-                    Invoke-WebRequest -Uri $uri -OutFile "$dir\$file"
-                } else {
-                    Invoke-WebRequest -Uri $uri -OutFile tmp.zip
-                    Expand-Archive -Path tmp.zip -DestinationPath "API\Mods\$folder"
-                    Remove-Item tmp.zip
-                }
-            }
+        uses: BadMagic100/setup-hk@v1
+        with:
+          apiPath: API
+          dependencyFilePath: Rando4Stats/ModDependencies.txt
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
