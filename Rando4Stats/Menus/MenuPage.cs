@@ -2,7 +2,7 @@
 
 namespace RandoStats.Menus
 {
-    internal abstract class MenuPage
+    public abstract class MenuPage
     {
         private Menu? menuRef;
         public Menu Menu => menuRef ??= ConstructMenu();

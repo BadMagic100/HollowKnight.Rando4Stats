@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace RandoStats.Menus
 {
-    internal class LayoutSettingsPage : MenuPage
+    public class LayoutSettingsPage : MenuPage
     {
         private readonly string name;
         private readonly StatLayoutSettings settingsInstance;
