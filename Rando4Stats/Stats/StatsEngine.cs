@@ -49,7 +49,10 @@ namespace RandoStats.Stats
             foreach (RandomizerStatistic stat in longLivedStats)
             {
                 if (!stat.IsComputable)
+                {
                     continue;
+                }
+
                 stat.BeginCompute();
                 RandoItemTag.AfterRandoItemGive += stat.OnLongLivedItemObtained;
                 TrackerUpdate.OnTransitionVisited += stat.HandleTransition;
@@ -64,7 +67,10 @@ namespace RandoStats.Stats
             foreach (RandomizerStatistic stat in longLivedStats)
             {
                 if (!stat.IsComputable)
+                {
                     continue;
+                }
+
                 RandoItemTag.AfterRandoItemGive -= stat.OnLongLivedItemObtained;
                 TrackerUpdate.OnTransitionVisited -= stat.HandleTransition;
                 stat.FinalizeCompute();
@@ -79,7 +85,9 @@ namespace RandoStats.Stats
             foreach (RandomizerStatistic stat in transientStats)
             {
                 if (!stat.IsComputable)
+                {
                     continue;
+                }
 
                 stat.BeginCompute();
                 foreach (AbstractPlacement placement in GetEligiblePlacements())

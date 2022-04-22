@@ -3,7 +3,6 @@ using MagicUI.Elements;
 using MagicUI.Graphics;
 using Modding;
 using RandomizerMod;
-using RandoStats.GUI.StatLayouts;
 using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Util;
@@ -118,7 +117,10 @@ namespace RandoStats.GUI
         /// <returns>Whether the input was successfully handled</returns>
         public static bool HandleInput()
         {
-            if (holdToSkipLock) return true;
+            if (holdToSkipLock)
+            {
+                return true;
+            }
 
             Image? progressBar = cutsceneLayout?.GetElement<Image>("Progress Bar");
 
