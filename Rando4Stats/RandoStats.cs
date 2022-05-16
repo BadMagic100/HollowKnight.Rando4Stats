@@ -44,6 +44,7 @@ namespace RandoStats
 
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)
         {
+            orig(self);
             if (IsEnabled)
             {
                 try
@@ -62,7 +63,6 @@ namespace RandoStats
                     LogError($"Unknown issue hooking RandoStats - {ex}");
                 }
             }
-            orig(self);
         }
 
         private IEnumerator OnSaveClosed(On.QuitToMenu.orig_Start orig, QuitToMenu self)
@@ -86,6 +86,7 @@ namespace RandoStats
 
         private void OnCompletionStart(On.GameCompletionScreen.orig_Start orig, GameCompletionScreen self)
         {
+            orig(self);
             if (IsEnabled)
             {
                 try
@@ -101,7 +102,6 @@ namespace RandoStats
                     LogError($"Unknown error computing/displaying stats - {ex}");
                 }
             }
-            orig(self);
         }
 
         private void HandleCutsceneInput(On.InputHandler.orig_CutsceneInput orig, InputHandler self)
