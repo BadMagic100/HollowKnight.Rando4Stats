@@ -3,6 +3,7 @@
 ![GitHub Build Workflow Status](https://img.shields.io/github/workflow/status/BadMagic100/HollowKnight.Rando4Stats/Build)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/BadMagic100/HollowKnight.Rando4Stats)
 ![Downloads GitHub all releases](https://img.shields.io/github/downloads/BadMagic100/HollowKnight.Rando4Stats/total)
+![Lines of Code](https://tokei.rs/b1/github/BadMagic100/HollowKnight.Rando4Stats)
 
 Rando4Stats (better known as RandoStats) is a Hollow Knight mod used with Randomizer 4 on patch 1.5. It provides more detailed stats about all the things you've
 done on the completion screen after the credits, and various quality-of-life changes to make it easier to view and share your stats.
