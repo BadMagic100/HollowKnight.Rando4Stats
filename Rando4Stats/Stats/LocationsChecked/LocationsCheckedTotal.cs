@@ -1,6 +1,6 @@
-﻿using ConnectionMetadataInjector.Util;
-using ItemChanger;
+﻿using ItemChanger;
 using RandomizerMod.RC;
+using RandoStats.Util;
 
 namespace RandoStats.Stats.LocationsChecked
 {
@@ -15,7 +15,7 @@ namespace RandoStats.Stats.LocationsChecked
         public override void HandlePlacement(AbstractPlacement placement)
         {
             RandoModLocation? loc = placement.RandoLocation();
-            if (loc != null && loc.Name != "Start")
+            if (loc != null && loc.Name != LocationNames.Start)
             {
                 if (placement.CheckVisitedAny(VisitState.Previewed | VisitState.ObtainedAnyItem))
                 {

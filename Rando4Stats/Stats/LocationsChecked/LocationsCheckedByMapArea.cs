@@ -28,7 +28,7 @@ namespace RandoStats.Stats.LocationsChecked
         public override void HandlePlacement(AbstractPlacement placement)
         {
             RandoModLocation? loc = placement.RandoLocation();
-            if (loc != null && loc.Name != "Start" && (loc.LocationDef?.MapArea ?? SubcategoryFinder.OTHER) == areaName)
+            if (loc != null && loc.Name != LocationNames.Start && (loc.LocationDef?.MapArea ?? SubcategoryFinder.OTHER) == areaName)
             {
                 if (placement.CheckVisitedAny(VisitState.Previewed | VisitState.ObtainedAnyItem))
                 {

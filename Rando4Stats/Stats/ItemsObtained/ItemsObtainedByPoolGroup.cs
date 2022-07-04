@@ -1,5 +1,4 @@
 ﻿using ConnectionMetadataInjector;
-using ConnectionMetadataInjector.Util;
 using ItemChanger;
 using ItemChanger.Items;
 using Modding;
@@ -34,7 +33,7 @@ namespace RandoStats.Stats.ItemsObtained
             // ignore start geo - in theory a connection could add other SpawnGeoItems, but in reality it's unlikely because like... you can just increase
             // min and max start geo as desired, so why would you
             IEnumerable<AbstractItem> itemsInGroup = placement.Items
-                .Where(x => !(x.RandoLocation()?.Name == "Start" && x is SpawnGeoItem))
+                .Where(x => !(x.RandoLocation()?.Name == LocationNames.Start && x is SpawnGeoItem))
                 .Where(x => SupplementalMetadata.Of(x).Get(CMI.ItemPoolGroup) == groupFriendlyName);
             ObtainedSum += itemsInGroup
                 .Where(x => x.WasEverObtained())

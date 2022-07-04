@@ -5,6 +5,7 @@ using ItemChanger.Items;
 using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Stats.ItemsObtained;
+using RandoStats.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace RandoStats.GUI.StatLayouts
         {
             IEnumerable<AbstractItem> validItems = StatsEngine.GetEligiblePlacements()
                 .SelectMany(plt => plt.Items)
-                .Where(i => !(i.RandoLocation()?.Name == "Start" && i is SpawnGeoItem));
+                .Where(i => !(i.RandoLocation()?.Name == LocationNames.Start && i is SpawnGeoItem));
             return CMI.GetConnectionProvidedValues(validItems, SupplementalMetadata.Of, CMI.ItemPoolGroup);
         }
 
