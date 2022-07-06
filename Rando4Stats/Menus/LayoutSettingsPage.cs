@@ -27,7 +27,7 @@ namespace RandoStats.Menus
                 () => (int)settingsInstance.Position),
             new CustomSlider("Sort Order",
                 (val) => settingsInstance.Order = (int)val,
-                () => settingsInstance.Order) { minValue = 0, maxValue = 50, wholeNumbers = true }
+                () => settingsInstance.Order, 0, 50, true)
         }
         .AppendIf(settingsInstance.EnabledSubcategories.Any(), new TextPanel("Subcategory Settings", fontSize: 50))
         .ConcatIf(settingsInstance.EnabledSubcategories.Any(), settingsInstance.EnabledSubcategories.Keys.Select(key =>

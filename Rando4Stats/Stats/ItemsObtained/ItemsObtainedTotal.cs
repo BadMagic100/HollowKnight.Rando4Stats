@@ -1,6 +1,6 @@
 ﻿using ItemChanger;
 using ItemChanger.Items;
-using RandoStats.Util;
+using RandomizerMod.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 

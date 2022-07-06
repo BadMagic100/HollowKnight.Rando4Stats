@@ -1,6 +1,6 @@
 ﻿using ItemChanger;
+using RandomizerMod.Extensions;
 using RandomizerMod.RC;
-using RandoStats.Util;
 
 namespace RandoStats.Stats.LocationsChecked
 {

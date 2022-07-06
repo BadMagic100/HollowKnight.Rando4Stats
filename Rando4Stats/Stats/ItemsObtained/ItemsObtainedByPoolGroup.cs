@@ -2,6 +2,7 @@
 using ItemChanger;
 using ItemChanger.Items;
 using Modding;
+using RandomizerMod.Extensions;
 using RandoStats.Util;
 using System.Collections.Generic;
 using System.Linq;

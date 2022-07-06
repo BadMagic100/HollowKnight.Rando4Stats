@@ -1,6 +1,7 @@
 ﻿using ConnectionMetadataInjector;
 using ItemChanger;
 using Modding;
+using RandomizerMod.Extensions;
 using RandomizerMod.RC;
 using RandoStats.Util;
 using CMI = ConnectionMetadataInjector.ConnectionMetadataInjector;
