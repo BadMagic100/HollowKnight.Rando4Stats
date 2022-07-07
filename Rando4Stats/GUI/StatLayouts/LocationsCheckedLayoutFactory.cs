@@ -1,10 +1,10 @@
 ﻿using ConnectionMetadataInjector;
 using ConnectionMetadataInjector.Util;
 using ItemChanger;
+using RandomizerMod.Extensions;
 using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Stats.LocationsChecked;
-using RandoStats.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;

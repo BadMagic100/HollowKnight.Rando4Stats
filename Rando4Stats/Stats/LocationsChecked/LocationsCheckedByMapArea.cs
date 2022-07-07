@@ -1,6 +1,7 @@
 ﻿using ConnectionMetadataInjector.Util;
 using ItemChanger;
 using Modding;
+using RandomizerMod.Extensions;
 using RandomizerMod.RC;
 using RandoStats.Util;
 

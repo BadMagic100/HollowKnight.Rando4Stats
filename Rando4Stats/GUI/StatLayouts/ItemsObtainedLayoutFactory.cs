@@ -2,10 +2,10 @@
 using ConnectionMetadataInjector.Util;
 using ItemChanger;
 using ItemChanger.Items;
+using RandomizerMod.Extensions;
 using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Stats.ItemsObtained;
-using RandoStats.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
