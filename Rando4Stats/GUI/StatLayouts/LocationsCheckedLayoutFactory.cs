@@ -8,7 +8,6 @@ using RandoStats.Stats.LocationsChecked;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CMI = ConnectionMetadataInjector.ConnectionMetadataInjector;
 
 namespace RandoStats.GUI.StatLayouts
 {
@@ -33,7 +32,8 @@ namespace RandoStats.GUI.StatLayouts
         {
             IEnumerable<AbstractPlacement> validItems = StatsEngine.GetEligiblePlacements()
                 .Where(plt => plt.RandoLocation()?.Name != LocationNames.Start);
-            return CMI.GetConnectionProvidedValues(validItems, SupplementalMetadata.OfPlacementAndLocations, CMI.LocationPoolGroup);
+            return InjectedProps.GetConnectionProvidedValues(validItems, SupplementalMetadata.OfPlacementAndLocations, 
+                InjectedProps.LocationPoolGroup);
         }
 
         private static IEnumerable<string> BuiltInGroups() => Enum.GetValues(typeof(PoolGroup))

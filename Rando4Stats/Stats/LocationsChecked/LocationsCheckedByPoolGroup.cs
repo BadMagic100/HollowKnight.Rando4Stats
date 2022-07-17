@@ -4,7 +4,6 @@ using Modding;
 using RandomizerMod.Extensions;
 using RandomizerMod.RC;
 using RandoStats.Util;
-using CMI = ConnectionMetadataInjector.ConnectionMetadataInjector;
 
 namespace RandoStats.Stats.LocationsChecked
 {
@@ -30,7 +29,8 @@ namespace RandoStats.Stats.LocationsChecked
         public override void HandlePlacement(AbstractPlacement placement)
         {
             RandoModLocation? loc = placement.RandoLocation();
-            if (loc != null && loc.Name != LocationNames.Start && SupplementalMetadata.OfPlacementAndLocations(placement).Get(CMI.LocationPoolGroup) == groupFriendlyName)
+            if (loc != null && loc.Name != LocationNames.Start && SupplementalMetadata.OfPlacementAndLocations(placement)
+                .Get(InjectedProps.LocationPoolGroup) == groupFriendlyName)
             {
                 if (placement.CheckVisitedAny(VisitState.Previewed | VisitState.ObtainedAnyItem))
                 {

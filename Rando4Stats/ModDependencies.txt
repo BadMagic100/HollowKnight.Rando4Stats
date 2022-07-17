@@ -3,5 +3,5 @@ Randomizer 4
 RandomizerCore
 ItemChanger
 MenuChanger
-ConnectionMetadataInjector from https://github.com/BadMagic100/ConnectionMetadataInjector/releases/download/v2.0.8220.33577/ConnectionMetadataInjector.zip
+ConnectionMetadataInjector from https://github.com/BadMagic100/ConnectionMetadataInjector/releases/download/v2.0.8233.2060/ConnectionMetadataInjector.zip
 Satchel

@@ -6,7 +6,6 @@ using RandomizerMod.Extensions;
 using RandoStats.Util;
 using System.Collections.Generic;
 using System.Linq;
-using CMI = ConnectionMetadataInjector.ConnectionMetadataInjector;
 
 namespace RandoStats.Stats.ItemsObtained
 {
@@ -35,7 +34,7 @@ namespace RandoStats.Stats.ItemsObtained
             // min and max start geo as desired, so why would you
             IEnumerable<AbstractItem> itemsInGroup = placement.Items
                 .Where(x => !(x.RandoLocation()?.Name == LocationNames.Start && x is SpawnGeoItem))
-                .Where(x => SupplementalMetadata.Of(x).Get(CMI.ItemPoolGroup) == groupFriendlyName);
+                .Where(x => SupplementalMetadata.Of(x).Get(InjectedProps.ItemPoolGroup) == groupFriendlyName);
             ObtainedSum += itemsInGroup
                 .Where(x => x.WasEverObtained())
                 .SideEffect(x => log.LogDebug($"Counting item {x.RandoItem()?.Name} towards group {groupShortName} obtains"))

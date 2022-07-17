@@ -7,6 +7,7 @@
         <Product>Rando4Stats</Product>
         <Description>A Hollow Knight Mod</Description>
         <Copyright>Copyright ©  2022</Copyright>
+        <NoWarn>CS7035</NoWarn>
         <AssemblyVersion>1.2.*</AssemblyVersion>
         <Deterministic>false</Deterministic>
         <Nullable>enable</Nullable>
