@@ -90,12 +90,7 @@ namespace RandoStats.GUI
                     VerticalAlignment = VerticalAlignment.Bottom
                 };
 
-                Texture2D progressTexture = textureLoader.GetTexture("Progress.png");
-                Sprite progressSprite = Sprite.Create(progressTexture,
-                    new Rect(0, 0, progressTexture.width, progressTexture.height),
-                    new Vector2(0.5f, 0.5f)
-                );
-                new Image(cutsceneLayout, progressSprite, "Progress Bar")
+                new Image(cutsceneLayout, BuiltInSprites.CreateBox(), "Progress Bar")
                 {
                     Padding = new Padding(0, 20),
                     Width = 0,
@@ -146,12 +141,7 @@ namespace RandoStats.GUI
                     // time we load into this scene.
                     holdToSkipLock = true;
                     GameManager.instance.SkipCutscene();
-                    // fade our stuff out too
-                    CanvasGroupLinearFade? fade = cutsceneLayout?.Canvas.AddComponent<CanvasGroupLinearFade>();
-                    if (fade != null)
-                    {
-                        fade.duration = 0.5f;
-                    }
+                    cutsceneLayout?.BeginFade(0, 0.5f);
                 }
                 float progressPercentage = (Time.time - pressStartTime) / LENGTH_OF_PRESS_TO_SKIP;
                 progressBar.Width = UI.Screen.width * progressPercentage;

@@ -50,9 +50,6 @@
     <AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>-->
     </PropertyGroup>
     <ItemGroup>
-      <None Remove="Resources\Progress.png" />
-    </ItemGroup>
-    <ItemGroup>
         <Reference Include="MagicUI">
             <HintPath>$(HollowKnightRefs)/Mods/MagicUI/MagicUI.dll</HintPath>
         </Reference>
@@ -348,8 +345,5 @@
     <ItemGroup>
         <None Include=".gitignore" />
         <None Include="..\README.md" />
-    </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Include="Resources\Progress.png" />
     </ItemGroup>
 </Project>
