@@ -39,47 +39,39 @@ namespace RandoStats
             On.GameCompletionScreen.Start += OnCompletionStart;
             On.InputHandler.CutsceneInput += HandleCutsceneInput;
 
+            FStats.API.OnGenerateFile += DefineStats;
+
             Log("Initialized");
+        }
+
+        private void DefineStats(Action<FStats.StatController> registerStat)
+        {
+            registerStat(new ItemsObtainedCollector());
         }
 
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)
         {
             orig(self);
-            if (IsEnabled)
+            try
             {
-                try
-                {
-                    PauseUI.BuildLayout();
-                    StatsEngine.Initialize();
-                    StatLayoutHelper.ConstructLayoutFactories(GlobalSettings);
-                    foreach (StatGroupLayoutFactory factory in StatLayoutHelper.LayoutFactories)
-                    {
-                        factory.HookStatsEngine();
-                    }
-                    StatsEngine.BeginComputeLongLived();
-                }
-                catch (Exception ex)
-                {
-                    LogError($"Unknown issue hooking RandoStats - {ex}");
-                }
+                PauseUI.BuildLayout();
+            }
+            catch (Exception ex)
+            {
+                LogError($"Unknown issue hooking RandoStats - {ex}");
             }
         }
 
         private IEnumerator OnSaveClosed(On.QuitToMenu.orig_Start orig, QuitToMenu self)
         {
-            if (IsEnabled)
+            try
             {
-                try
-                {
-                    PauseUI.DestroyLayout();
-                    BenchwarpInterop.UnhideSceneName();
-
-                    StatsEngine.FinalizeComputeLongLived();
-                }
-                catch (Exception ex)
-                {
-                    LogError($"Unknown issue unhooking RandoStats - {ex}");
-                }
+                PauseUI.DestroyLayout();
+                BenchwarpInterop.UnhideSceneName();
+            }
+            catch (Exception ex)
+            {
+                LogError($"Unknown issue unhooking RandoStats - {ex}");
             }
             return orig(self);
         }
@@ -87,20 +79,16 @@ namespace RandoStats
         private void OnCompletionStart(On.GameCompletionScreen.orig_Start orig, GameCompletionScreen self)
         {
             orig(self);
-            if (IsEnabled)
+            try
             {
-                try
-                {
-                    PauseUI.DestroyLayout();
-                    RecentItemsInterop.ToggleDisplay(false);
-                    BenchwarpInterop.TempHideSceneName();
-                    StatsEngine.ComputeTransient();
-                    CompletionUI.BuildLayout();
-                }
-                catch (Exception ex)
-                {
-                    LogError($"Unknown error computing/displaying stats - {ex}");
-                }
+                PauseUI.DestroyLayout();
+                RecentItemsInterop.ToggleDisplay(false);
+                BenchwarpInterop.TempHideSceneName();
+                CompletionUI.BuildLayout();
+            }
+            catch (Exception ex)
+            {
+                LogError($"Unknown error computing/displaying stats - {ex}");
             }
         }
 

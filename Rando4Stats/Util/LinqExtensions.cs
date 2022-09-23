@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ItemChanger;
+using ItemChanger.Tags;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +8,33 @@ namespace RandoStats.Util
 {
     public static class LinqExtensions
     {
+        public static IEnumerable<AbstractPlacement> SelectValidPlacements(this IEnumerable<AbstractPlacement> placements)
+        {
+            foreach (AbstractPlacement placement in placements)
+            {
+                if (placement.Name == LocationNames.Start)
+                {
+                    continue;
+                }
+
+                if (placement.GetTag<CompletionWeightTag>() is not CompletionWeightTag t || t.Weight != 0)
+                {
+                    yield return placement;
+                }
+            }
+        }
+
+        public static IEnumerable<AbstractItem> SelectValidItems(this IEnumerable<AbstractItem> items)
+        {
+            foreach (AbstractItem item in items)
+            {
+                if (item.GetTag<CompletionWeightTag>() is not CompletionWeightTag t || t.Weight != 0)
+                {
+                    yield return item;
+                }
+            }
+        }
+
         public static IEnumerable<T> SideEffect<T>(this IEnumerable<T> ls, Action<T> sideEffect)
         {
             return ls.Select(x =>

@@ -3,11 +3,8 @@ using MagicUI.Elements;
 using MagicUI.Graphics;
 using Modding;
 using RandomizerMod;
-using RandoStats.Settings;
 using RandoStats.Stats;
 using RandoStats.Util;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Rando = RandomizerMod.RandomizerMod;
@@ -19,7 +16,6 @@ namespace RandoStats.GUI
         private static readonly Loggable log = ScopedLoggers.GetLogger();
 
         private static LayoutRoot? cutsceneLayout;
-        private static readonly TextureLoader textureLoader = new(typeof(RandoStats).Assembly, "RandoStats.Resources");
 
         private static float pressStartTime = 0;
         private static bool holdToSkipLock = false;
@@ -30,7 +26,6 @@ namespace RandoStats.GUI
         {
             TextObject? clipboardPrompt = cutsceneLayout?.GetElement<TextObject>("Clipboard Prompt");
             StatFormatRegistry.GenerateBasicStats();
-            StatsEngine.UpdateStatFormatRegistry();
             GUIUtility.systemCopyBuffer = StatFormatRegistry.Format(RandoStats.Instance!.GlobalSettings.StatFormatString);
             if (clipboardPrompt != null)
             {
@@ -54,32 +49,6 @@ namespace RandoStats.GUI
 
                 cutsceneLayout = new LayoutRoot(false, "Completion Layout");
                 cutsceneLayout.ListenForHotkey(KeyCode.C, CopyStats, ModifierKeys.Ctrl);
-
-                IEnumerable<IGrouping<StatPosition, StatGroupLayoutFactory>> factoriesByPosition = StatLayoutHelper.LayoutFactories
-                    .OrderBy(x => x.Settings.Order)
-                    .GroupBy(x => x.Settings.Position);
-                foreach (IGrouping<StatPosition, StatGroupLayoutFactory> positionalGroup in factoriesByPosition)
-                {
-                    Layout? targetLayout = StatLayoutHelper.GetLayoutForPosition(cutsceneLayout, positionalGroup.Key);
-                    int gridColumns = StatLayoutHelper.GetDynamicGridColumnsForPosition(positionalGroup.Key);
-                    foreach (StatGroupLayoutFactory factory in positionalGroup)
-                    {
-                        if (factory.CanDisplay)
-                        {
-                            try
-                            {
-                                if (targetLayout != null)
-                                {
-                                    targetLayout.Children.Add(factory.BuildLayout(cutsceneLayout, gridColumns));
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                log.LogError($"Unknown error calculating items obtained stats!\n{ex.StackTrace}");
-                            }
-                        }
-                    }
-                }
 
                 new TextObject(cutsceneLayout, "Clipboard Prompt")
                 {
