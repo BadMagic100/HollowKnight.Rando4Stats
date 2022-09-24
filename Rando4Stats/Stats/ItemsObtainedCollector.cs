@@ -4,12 +4,15 @@ using FStats;
 using FStats.StatControllers.ModConditional;
 using ItemChanger;
 using ItemChanger.Internal;
+using RandoStats.Menus;
 using RandoStats.Util;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace RandoStats.Stats
 {
+    [MenuName(TITLE)]
+    [MenuSubpage(StandardSubpages.POOL_SUBPAGE)]
     public class ItemsObtainedCollector : StatController
     {
         const string TITLE = "Items Obtained";
@@ -54,13 +57,16 @@ namespace RandoStats.Stats
             // weeeeee artifacts of legacy code :crying:
             StatFormatRegistry.SetStat("ItemsObtainedTotal", "Fraction", totalFraction);
 
-            yield return new DisplayInfo()
+            if (RandoStats.Instance!.GlobalSettings.ShouldDisplay(this, StandardSubpages.POOL_SUBPAGE))
             {
-                Title = TITLE,
-                MainStat = totalFraction,
-                StatColumns = lines.TableColumns(10),
-                Priority = BuiltinScreenPriorityValues.ICChecksDisplay + 100,
-            };
+                yield return new DisplayInfo()
+                {
+                    Title = TITLE,
+                    MainStat = totalFraction,
+                    StatColumns = lines.TableColumns(10),
+                    Priority = BuiltinScreenPriorityValues.ICChecksDisplay + 100,
+                };
+            }
         }
 
         public override void Unload() { }

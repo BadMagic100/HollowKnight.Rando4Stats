@@ -1,7 +1,8 @@
-﻿using MonoMod.Utils;
+﻿using FStats;
+using Modding.Utils;
 using RandoStats.Settings;
 using Satchel.BetterMenus;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -9,16 +10,14 @@ namespace RandoStats.Menus
 {
     internal class MenuHome : MenuPage
     {
-        private static readonly IEnumerable<PropertyInfo> settingProperties = typeof(RandoStatsGlobalSettings)
-            .GetProperties()
-            .Where(x => x.PropertyType == typeof(StatLayoutSettings));
-
-        protected override Menu ConstructMenu() => new("RandoStats", settingProperties
-            .Select(prop => {
-                string name = prop.Name.Replace("LayoutSettings", "").SpacedPascalCase();
-                StatLayoutSettings settings = (StatLayoutSettings)prop.GetValue(RandoStats.Instance!.GlobalSettings);
-                return Blueprints.NavigateToMenu(name, $"Settings for the {name} stat", 
-                    () => new LayoutSettingsPage(name, settings).Menu.GetMenuScreen(Menu.menuScreen));
+        protected override Menu ConstructMenu() => new("RandoStats", typeof(RandoStatsGlobalSettings).Assembly.GetTypesSafely()
+            .Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(StatController)))
+            .Where(t => Attribute.IsDefined(t, typeof(MenuNameAttribute)))
+            .Select(t =>
+            {
+                MenuNameAttribute menuName = t.GetCustomAttribute<MenuNameAttribute>();
+                return Blueprints.NavigateToMenu(menuName.Name, $"Settings for the {menuName.Name} stat",
+                    () => new StatSettingsPage(menuName.Name, t).Menu.GetMenuScreen(Menu.menuScreen));
             }).ToArray());
     }
 }

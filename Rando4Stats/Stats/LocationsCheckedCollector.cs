@@ -6,12 +6,16 @@ using ItemChanger;
 using ItemChanger.Internal;
 using RandomizerMod.Extensions;
 using RandomizerMod.RC;
+using RandoStats.Menus;
 using RandoStats.Util;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace RandoStats.Stats
 {
+    [MenuName(TITLE)]
+    [MenuSubpage(StandardSubpages.AREA_SUBPAGE)]
+    [MenuSubpage(StandardSubpages.POOL_SUBPAGE)]
     public class LocationsCheckedCollector : StatController
     {
         const string TITLE = "Locations Checked";
@@ -73,6 +77,7 @@ namespace RandoStats.Stats
             }
 
             List<string> areas = FStatsMod.LS.Get<TimeByAreaStat>().AreaOrder()
+                .Where(a => totalByArea[a] > 0)
                 .Select(a => $"{a} - {checkedByArea[a]}/{totalByArea[a]}")
                 .ToList()
                 .TableColumns(10);
@@ -88,21 +93,27 @@ namespace RandoStats.Stats
                 .ToList()
                 .TableColumns(10);
 
-            yield return new DisplayInfo()
+            if (RandoStats.Instance!.GlobalSettings.ShouldDisplay(this, StandardSubpages.AREA_SUBPAGE))
             {
-                Title = TITLE,
-                MainStat = $"{checkedByArea.Total}/{totalByArea.Total}",
-                StatColumns = areas,
-                Priority = PRIORITY,
-            };
+                yield return new DisplayInfo()
+                {
+                    Title = TITLE,
+                    MainStat = $"{checkedByArea.Total}/{totalByArea.Total}",
+                    StatColumns = areas,
+                    Priority = PRIORITY,
+                };
+            }
 
-            yield return new DisplayInfo()
+            if (RandoStats.Instance!.GlobalSettings.ShouldDisplay(this, StandardSubpages.POOL_SUBPAGE))
             {
-                Title = TITLE,
-                MainStat = $"{checkedByGroup.Total}/{totalByGroup.Total}",
-                StatColumns = groups,
-                Priority = PRIORITY
-            };
+                yield return new DisplayInfo()
+                {
+                    Title = TITLE,
+                    MainStat = $"{checkedByGroup.Total}/{totalByGroup.Total}",
+                    StatColumns = groups,
+                    Priority = PRIORITY
+                };
+            }
         }
 
         public override void Unload() { }

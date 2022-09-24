@@ -1,6 +1,7 @@
 ﻿using FStats;
 using FStats.StatControllers;
 using RandomizerMod.RC;
+using RandoStats.Menus;
 using RandoStats.Util;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,9 @@ using Rando = RandomizerMod.RandomizerMod;
 
 namespace RandoStats.Stats
 {
+
+    [MenuName(TITLE)]
+    [MenuSubpage(StandardSubpages.AREA_SUBPAGE)]
     public class TransitionsVisitedCollector : StatController
     {
         const string TITLE = "Randomized Transitions Visited";
@@ -42,13 +46,16 @@ namespace RandoStats.Stats
                 .ToList()
                 .TableColumns(10);
 
-            yield return new DisplayInfo()
+            if (RandoStats.Instance!.GlobalSettings.ShouldDisplay(this, StandardSubpages.AREA_SUBPAGE))
             {
-                Title = TITLE,
-                MainStat = $"{visited.Total}/{total.Total}",
-                StatColumns = cols,
-                Priority = PRIORITY,
-            };
+                yield return new DisplayInfo()
+                {
+                    Title = TITLE,
+                    MainStat = $"{visited.Total}/{total.Total}",
+                    StatColumns = cols,
+                    Priority = PRIORITY,
+                };
+            }
         }
 
         public override void Unload() { }
