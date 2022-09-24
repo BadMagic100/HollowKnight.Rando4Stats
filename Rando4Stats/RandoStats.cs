@@ -48,6 +48,7 @@ namespace RandoStats
         {
             registerStat(new ItemsObtainedCollector());
             registerStat(new LocationsCheckedCollector());
+            registerStat(new TransitionsVisitedCollector());
         }
 
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)
