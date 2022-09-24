@@ -2,11 +2,9 @@
 using ConnectionMetadataInjector.Util;
 using FStats;
 using FStats.StatControllers.ModConditional;
-using FStats.Util;
 using ItemChanger;
 using ItemChanger.Internal;
 using RandoStats.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +12,8 @@ namespace RandoStats.Stats
 {
     public class ItemsObtainedCollector : StatController
     {
+        const string TITLE = "Items Obtained";
+
         public override void Initialize() { }
 
         public override IEnumerable<DisplayInfo> GetDisplayInfos()
@@ -23,8 +23,8 @@ namespace RandoStats.Stats
                 yield break;
             }
 
-            Dictionary<string, int> obtained = new();
-            Dictionary<string, int> total = new();
+            Counter obtained = new();
+            Counter total = new();
 
             List<AbstractItem> items = Ref.Settings.Placements.Values.SelectValidPlacements()
                 .SelectMany(p => p.Items.SelectValidItems())
@@ -32,14 +32,6 @@ namespace RandoStats.Stats
             foreach (AbstractItem item in items)
             {
                 string group = SupplementalMetadata.Of(item).Get(InjectedProps.ItemPoolGroup);
-                if (!obtained.ContainsKey(group))
-                {
-                    obtained[group] = 0;
-                }
-                if (!total.ContainsKey(group))
-                {
-                    total[group] = 0;
-                }
 
                 total[group]++;
                 if (item.WasEverObtained())
@@ -54,26 +46,19 @@ namespace RandoStats.Stats
             List<string> lines = PoolGroupUtil.BuiltInGroups
                 .Concat(connectionAddedGroups)
                 .Append(SubcategoryFinder.OTHER)
-                .Where(g => total.ContainsKey(g))
+                .Where(g => total[g] > 0)
                 .Select(g => $"{g} - {obtained[g]}/{total[g]}")
                 .ToList();
 
-            List<string> cols = new();
-            int requiredCols = (int)Math.Ceiling(lines.Count / 10f);
-            for (int i = 0; i < requiredCols; i++)
-            {
-                cols.Add(string.Join("\n", lines.Slice(i, requiredCols)));
-            }
-
-            string totalFraction = $"{obtained.Values.Sum()}/{total.Values.Sum()}";
+            string totalFraction = $"{obtained.Total}/{total.Total}";
             // weeeeee artifacts of legacy code :crying:
             StatFormatRegistry.SetStat("ItemsObtainedTotal", "Fraction", totalFraction);
 
             yield return new DisplayInfo()
             {
-                Title = "Items Obtained",
+                Title = TITLE,
                 MainStat = totalFraction,
-                StatColumns = cols,
+                StatColumns = lines.TableColumns(10),
                 Priority = BuiltinScreenPriorityValues.ICChecksDisplay + 100,
             };
         }

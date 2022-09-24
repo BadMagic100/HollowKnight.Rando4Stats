@@ -47,6 +47,7 @@ namespace RandoStats
         private void DefineStats(Action<FStats.StatController> registerStat)
         {
             registerStat(new ItemsObtainedCollector());
+            registerStat(new LocationsCheckedCollector());
         }
 
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)

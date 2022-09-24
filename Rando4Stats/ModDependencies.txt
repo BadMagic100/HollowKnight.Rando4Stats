@@ -3,6 +3,6 @@ Randomizer 4
 RandomizerCore
 ItemChanger
 MenuChanger
-ConnectionMetadataInjector from https://github.com/BadMagic100/ConnectionMetadataInjector/releases/download/v2.0.8233.2060/ConnectionMetadataInjector.zip
+ConnectionMetadataInjector
 Satchel
-FStats
+FStats from https://github.com/flibber-hk/HollowKnight.FStats/suites/8432203759/artifacts/373502611

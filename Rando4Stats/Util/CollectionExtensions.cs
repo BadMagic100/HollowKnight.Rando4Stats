@@ -1,4 +1,5 @@
-﻿using ItemChanger;
+﻿using FStats.Util;
+using ItemChanger;
 using ItemChanger.Tags;
 using System;
 using System.Collections.Generic;
@@ -6,8 +7,19 @@ using System.Linq;
 
 namespace RandoStats.Util
 {
-    public static class LinqExtensions
+    public static class CollectionExtensions
     {
+        public static List<string> TableColumns(this List<string> lines, int maxCols)
+        {
+            List<string> cols = new();
+            int requiredCols = (int)Math.Ceiling(lines.Count / (float)maxCols);
+            for (int i = 0; i < requiredCols; i++)
+            {
+                cols.Add(string.Join("\n", lines.Slice(i, requiredCols)));
+            }
+            return cols;
+        }
+
         public static IEnumerable<AbstractPlacement> SelectValidPlacements(this IEnumerable<AbstractPlacement> placements)
         {
             foreach (AbstractPlacement placement in placements)

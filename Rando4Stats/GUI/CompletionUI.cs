@@ -26,7 +26,7 @@ namespace RandoStats.GUI
         {
             TextObject? clipboardPrompt = cutsceneLayout?.GetElement<TextObject>("Clipboard Prompt");
             StatFormatRegistry.GenerateBasicStats();
-            GUIUtility.systemCopyBuffer = StatFormatRegistry.Format(RandoStats.Instance!.GlobalSettings.StatFormatString);
+            GUIUtility.systemCopyBuffer = StatFormatRegistry.Format("$RACING_EXTENDED$");
             if (clipboardPrompt != null)
             {
                 clipboardPrompt.Text = Localization.Localize("Copied!");
