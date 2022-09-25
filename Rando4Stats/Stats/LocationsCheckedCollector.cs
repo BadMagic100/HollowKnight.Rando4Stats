@@ -4,6 +4,8 @@ using FStats;
 using FStats.StatControllers;
 using ItemChanger;
 using ItemChanger.Internal;
+using ItemChanger.Placements;
+using Modding;
 using RandomizerMod.Extensions;
 using RandomizerMod.RC;
 using RandoStats.Menus;
@@ -20,6 +22,8 @@ namespace RandoStats.Stats
     {
         const string TITLE = "Locations Checked";
         const int PRIORITY = -80_000;
+
+        private static readonly Loggable log = ScopedLoggers.GetLogger();
 
         public override void Initialize() { }
 
@@ -60,8 +64,14 @@ namespace RandoStats.Stats
                         }
                     }
                 }
+                else if (plt is IPrimaryLocationPlacement lp)
+                {
+                    area = AreaName.CleanAreaName(lp.Location.sceneName ?? AreaName.Other);
+                }
+
                 if (string.IsNullOrEmpty(area))
                 {
+                    log.LogWarn($"Skipping location: {plt.Name}");
                     continue;
                 }
 
