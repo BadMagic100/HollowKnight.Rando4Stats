@@ -1,6 +1,7 @@
 ﻿using ConnectionMetadataInjector;
 using ConnectionMetadataInjector.Util;
 using FStats;
+using FStats.Attributes;
 using FStats.StatControllers;
 using ItemChanger;
 using ItemChanger.Internal;
@@ -18,6 +19,7 @@ namespace RandoStats.Stats
     [MenuName(TITLE)]
     [MenuSubpage(StandardSubpages.AREA_SUBPAGE)]
     [MenuSubpage(StandardSubpages.POOL_SUBPAGE)]
+    [GlobalSettingsExclude]
     public class LocationsCheckedCollector : StatController
     {
         const string TITLE = "Locations Checked";
@@ -86,7 +88,7 @@ namespace RandoStats.Stats
                 totalByGroup[group]++;
             }
 
-            List<string> areas = FStatsMod.LS.Get<TimeByAreaStat>().AreaOrder()
+            List<string> areas = FStatsMod.LS.Get<TimeByAreaStat>().AreaOrder
                 .Where(a => totalByArea[a] > 0)
                 .Select(a => $"{a} - {checkedByArea[a]}/{totalByArea[a]}")
                 .ToList()

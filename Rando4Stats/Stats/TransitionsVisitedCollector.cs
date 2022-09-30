@@ -1,4 +1,5 @@
 ﻿using FStats;
+using FStats.Attributes;
 using FStats.StatControllers;
 using RandomizerMod.RC;
 using RandoStats.Menus;
@@ -12,6 +13,7 @@ namespace RandoStats.Stats
 
     [MenuName(TITLE)]
     [MenuSubpage(StandardSubpages.AREA_SUBPAGE)]
+    [GlobalSettingsExclude]
     public class TransitionsVisitedCollector : StatController
     {
         const string TITLE = "Randomized Transitions Visited";
@@ -40,7 +42,7 @@ namespace RandoStats.Stats
                 total[area]++;
             }
 
-            List<string> cols = FStatsMod.LS.Get<TimeByAreaStat>().AreaOrder()
+            List<string> cols = FStatsMod.LS.Get<TimeByAreaStat>().AreaOrder
                 .Where(a => total[a] > 0)
                 .Select(a => $"{a} - {visited[a]}/{total[a]}")
                 .ToList()

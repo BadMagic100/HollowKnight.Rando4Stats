@@ -1,11 +1,14 @@
-﻿using Modding;
+﻿using FStats;
+using Modding;
+using Modding.Utils;
 using RandoStats.GUI;
 using RandoStats.Interop;
 using RandoStats.Menus;
 using RandoStats.Settings;
-using RandoStats.Stats;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Rando = RandomizerMod.RandomizerMod;
 
 namespace RandoStats
@@ -44,11 +47,16 @@ namespace RandoStats
             Log("Initialized");
         }
 
-        private void DefineStats(Action<FStats.StatController> registerStat)
+        private void DefineStats(Action<StatController> registerStat)
         {
-            registerStat(new ItemsObtainedCollector());
-            registerStat(new LocationsCheckedCollector());
-            registerStat(new TransitionsVisitedCollector());
+            IEnumerable<StatController> statControllers = typeof(RandoStats).Assembly.GetTypesSafely()
+                .Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(StatController)))
+                .Select(t => Activator.CreateInstance(t))
+                .Cast<StatController>();
+            foreach (StatController controller in statControllers)
+            {
+                registerStat(controller);
+            }
         }
 
         private void OnSaveOpened(On.HeroController.orig_Awake orig, HeroController self)

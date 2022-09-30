@@ -52,6 +52,9 @@
     <Reference Include="FStats">
       <HintPath>$(HollowKnightRefs)/Mods/FStats/FStats.dll</HintPath>
     </Reference>
+    <Reference Include="ItemSync">
+      <HintPath>$(HollowKnightRefs)/Mods/ItemSync/ItemSync.dll</HintPath>
+    </Reference>
     <Reference Include="MagicUI">
       <HintPath>$(HollowKnightRefs)/Mods/MagicUI/MagicUI.dll</HintPath>
     </Reference>

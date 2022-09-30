@@ -1,6 +1,7 @@
 ﻿using ConnectionMetadataInjector;
 using ConnectionMetadataInjector.Util;
 using FStats;
+using FStats.Attributes;
 using FStats.StatControllers.ModConditional;
 using ItemChanger;
 using ItemChanger.Internal;
@@ -13,6 +14,7 @@ namespace RandoStats.Stats
 {
     [MenuName(TITLE)]
     [MenuSubpage(StandardSubpages.POOL_SUBPAGE)]
+    [GlobalSettingsExclude]
     public class ItemsObtainedCollector : StatController
     {
         const string TITLE = "Items Obtained";

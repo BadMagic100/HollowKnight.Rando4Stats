@@ -18,6 +18,8 @@ namespace RandoStats.Menus
                 MenuNameAttribute menuName = t.GetCustomAttribute<MenuNameAttribute>();
                 return Blueprints.NavigateToMenu(menuName.Name, $"Settings for the {menuName.Name} stat",
                     () => new StatSettingsPage(menuName.Name, t).Menu.GetMenuScreen(Menu.menuScreen));
-            }).ToArray());
+            })
+            .OrderBy(m => m.Name)
+            .ToArray());
     }
 }
