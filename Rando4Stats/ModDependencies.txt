@@ -5,5 +5,5 @@ ItemChanger
 MenuChanger
 ConnectionMetadataInjector
 Satchel
-FStats from https://github.com/flibber-hk/HollowKnight.FStats/suites/8432203759/artifacts/373502611
+FStats
 ItemSync
