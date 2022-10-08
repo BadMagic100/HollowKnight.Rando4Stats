@@ -95,7 +95,7 @@ namespace RandoStats.Stats
                     .ToList()
                     .TableColumns(10);
 
-                int percentage = 100 * Mathf.RoundToInt((float)obtainedByArea.Total / total.Total);
+                int percentage = Mathf.RoundToInt(100f * obtainedByArea.Total / total.Total);
 
                 yield return new DisplayInfo()
                 {
