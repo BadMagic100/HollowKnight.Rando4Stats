@@ -62,8 +62,8 @@ jobs:
         run: |
           $sha = Get-Content artifacts/Publish/SHA.txt
           $ver = Get-Content artifacts/Publish/version.txt
-          echo "::set-output name=archiveHash::$sha"
-          echo "::set-output name=buildVersion::$ver"
+          echo "archiveHash::$sha" >> $GITHUB_OUTPUT
+          echo "buildVersion::$ver" >> $GITHUB_OUTPUT
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
