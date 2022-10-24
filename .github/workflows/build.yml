@@ -64,10 +64,12 @@ jobs:
           $ver = Get-Content artifacts/Publish/version.txt
           echo "archiveHash=$sha" >> $GITHUB_OUTPUT
           echo "buildVersion=$ver" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          draft: false
+          draft: true
           generate_release_notes: true
           fail_on_unmatched_files: true
           tag_name: v${{ steps.details.outputs.buildVersion }}
