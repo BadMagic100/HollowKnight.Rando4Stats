@@ -1,6 +1,6 @@
 # Rando4Stats
 
-![GitHub Build Workflow Status](https://img.shields.io/github/workflow/status/BadMagic100/HollowKnight.Rando4Stats/Build)
+![GitHub Build Workflow Status](https://img.shields.io/github/actions/workflow/status/BadMagic100/HollowKnight.Rando4Stats/build.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/BadMagic100/HollowKnight.Rando4Stats)
 ![Downloads GitHub all releases](https://img.shields.io/github/downloads/BadMagic100/HollowKnight.Rando4Stats/total)
 ![Lines of Code](https://tokei.rs/b1/github/BadMagic100/HollowKnight.Rando4Stats)
